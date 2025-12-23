@@ -21,7 +21,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_pLoginWindow
+class Ui_LoginWindow
 {
 public:
     QVBoxLayout *verticalLayout_8;
@@ -54,12 +54,12 @@ public:
     QSpacerItem *horizontalSpacer_5;
     QVBoxLayout *pLoginLayout6;
 
-    void setupUi(QWidget *pLoginWindow)
+    void setupUi(QWidget *LoginWindow)
     {
-        if (pLoginWindow->objectName().isEmpty())
-            pLoginWindow->setObjectName("pLoginWindow");
-        pLoginWindow->resize(631, 597);
-        verticalLayout_8 = new QVBoxLayout(pLoginWindow);
+        if (LoginWindow->objectName().isEmpty())
+            LoginWindow->setObjectName("LoginWindow");
+        LoginWindow->resize(631, 597);
+        verticalLayout_8 = new QVBoxLayout(LoginWindow);
         verticalLayout_8->setObjectName("verticalLayout_8");
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName("verticalLayout");
@@ -69,7 +69,7 @@ public:
 
         pLoginLayout1->addItem(horizontalSpacer_7);
 
-        pLabel_msg1 = new QLabel(pLoginWindow);
+        pLabel_msg1 = new QLabel(LoginWindow);
         pLabel_msg1->setObjectName("pLabel_msg1");
 
         pLoginLayout1->addWidget(pLabel_msg1);
@@ -94,12 +94,12 @@ public:
 
         pLoginLayout2_1->addItem(horizontalSpacer_10);
 
-        pLabel_ID = new QLabel(pLoginWindow);
+        pLabel_ID = new QLabel(LoginWindow);
         pLabel_ID->setObjectName("pLabel_ID");
 
         pLoginLayout2_1->addWidget(pLabel_ID);
 
-        pLineEdit_ID = new QLineEdit(pLoginWindow);
+        pLineEdit_ID = new QLineEdit(LoginWindow);
         pLineEdit_ID->setObjectName("pLineEdit_ID");
 
         pLoginLayout2_1->addWidget(pLineEdit_ID);
@@ -124,13 +124,14 @@ public:
 
         pLoginLayout3_1->addItem(horizontalSpacer_11);
 
-        pLabel_PW = new QLabel(pLoginWindow);
+        pLabel_PW = new QLabel(LoginWindow);
         pLabel_PW->setObjectName("pLabel_PW");
 
         pLoginLayout3_1->addWidget(pLabel_PW);
 
-        pLineEdit_PW = new QLineEdit(pLoginWindow);
+        pLineEdit_PW = new QLineEdit(LoginWindow);
         pLineEdit_PW->setObjectName("pLineEdit_PW");
+        pLineEdit_PW->setEchoMode(QLineEdit::EchoMode::Password);
 
         pLoginLayout3_1->addWidget(pLineEdit_PW);
 
@@ -157,7 +158,7 @@ public:
 
         pLoginLayout4->addItem(horizontalSpacer_2);
 
-        pPBtton_Login = new QPushButton(pLoginWindow);
+        pPBtton_Login = new QPushButton(LoginWindow);
         pPBtton_Login->setObjectName("pPBtton_Login");
 
         pLoginLayout4->addWidget(pPBtton_Login);
@@ -175,7 +176,7 @@ public:
 
         pLoginLayout5->addItem(horizontalSpacer_4);
 
-        pLabel_status = new QLabel(pLoginWindow);
+        pLabel_status = new QLabel(LoginWindow);
         pLabel_status->setObjectName("pLabel_status");
 
         pLoginLayout5->addWidget(pLabel_status);
@@ -202,25 +203,25 @@ public:
         verticalLayout_8->addLayout(verticalLayout);
 
 
-        retranslateUi(pLoginWindow);
+        retranslateUi(LoginWindow);
 
-        QMetaObject::connectSlotsByName(pLoginWindow);
+        QMetaObject::connectSlotsByName(LoginWindow);
     } // setupUi
 
-    void retranslateUi(QWidget *pLoginWindow)
+    void retranslateUi(QWidget *LoginWindow)
     {
-        pLoginWindow->setWindowTitle(QCoreApplication::translate("pLoginWindow", "Form", nullptr));
-        pLabel_msg1->setText(QCoreApplication::translate("pLoginWindow", "Please Insert ID and Password", nullptr));
-        pLabel_ID->setText(QCoreApplication::translate("pLoginWindow", "ID              :", nullptr));
-        pLabel_PW->setText(QCoreApplication::translate("pLoginWindow", "Password:", nullptr));
-        pPBtton_Login->setText(QCoreApplication::translate("pLoginWindow", "Login", nullptr));
+        LoginWindow->setWindowTitle(QCoreApplication::translate("LoginWindow", "Form", nullptr));
+        pLabel_msg1->setText(QCoreApplication::translate("LoginWindow", "Please Insert ID and Password", nullptr));
+        pLabel_ID->setText(QCoreApplication::translate("LoginWindow", "ID              :", nullptr));
+        pLabel_PW->setText(QCoreApplication::translate("LoginWindow", "Password:", nullptr));
+        pPBtton_Login->setText(QCoreApplication::translate("LoginWindow", "Login", nullptr));
         pLabel_status->setText(QString());
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class pLoginWindow: public Ui_pLoginWindow {};
+    class LoginWindow: public Ui_LoginWindow {};
 } // namespace Ui
 
 QT_END_NAMESPACE

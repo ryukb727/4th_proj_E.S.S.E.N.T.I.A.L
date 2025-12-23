@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_QML_DEBUG -DQT_CHARTS_LIB -DQT_OPENGLWIDGETS_LIB -DQT_WIDGETS_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_SQL_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -Wextra -fPIC -D_REENTRANT $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++1z -Wall -Wextra -fPIC -D_REENTRANT $(DEFINES)
-INCPATH       = -I../../../ESSMonitor -I. -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I. -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../../../ESSMonitor -I. -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGLWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGL -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I. -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/ubuntu/Qt6/6.8.3/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = ESSMonitor1.0.0
 DISTDIR = /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/.tmp/ESSMonitor1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/home/ubuntu/Qt6/6.8.3/gcc_64/lib -Wl,-rpath-link,/home/ubuntu/Qt6/6.8.3/gcc_64/lib
-LIBS          = $(SUBLIBS) /home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Widgets.so /home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Gui.so /home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Core.so -lpthread -lGL   
+LIBS          = $(SUBLIBS) /home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Charts.so -pthread /home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6OpenGLWidgets.so /home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Widgets.so /home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6OpenGL.so /home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Gui.so /home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Sql.so /home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Core.so -lpthread -lGL   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -52,31 +52,41 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../../loginwindow.cpp \
+SOURCES       = ../../batteryrackwidget.cpp \
+		../../essmapwidget.cpp \
+		../../loginwindow.cpp \
 		../../main.cpp \
 		../../mainwindow.cpp \
-		../../ptabaccess.cpp \
-		../../ptabalert.cpp \
-		../../ptabenv.cpp \
-		../../ptabmain.cpp moc_loginwindow.cpp \
+		../../tab1main.cpp \
+		../../tab2env.cpp \
+		../../tab3alert.cpp \
+		../../tab4access.cpp qrc_resources.cpp \
+		moc_batteryrackwidget.cpp \
+		moc_essmapwidget.cpp \
+		moc_loginwindow.cpp \
 		moc_mainwindow.cpp \
-		moc_ptabaccess.cpp \
-		moc_ptabalert.cpp \
-		moc_ptabenv.cpp \
-		moc_ptabmain.cpp
-OBJECTS       = loginwindow.o \
+		moc_tab1main.cpp \
+		moc_tab2env.cpp \
+		moc_tab3alert.cpp \
+		moc_tab4access.cpp
+OBJECTS       = batteryrackwidget.o \
+		essmapwidget.o \
+		loginwindow.o \
 		main.o \
 		mainwindow.o \
-		ptabaccess.o \
-		ptabalert.o \
-		ptabenv.o \
-		ptabmain.o \
+		tab1main.o \
+		tab2env.o \
+		tab3alert.o \
+		tab4access.o \
+		qrc_resources.o \
+		moc_batteryrackwidget.o \
+		moc_essmapwidget.o \
 		moc_loginwindow.o \
 		moc_mainwindow.o \
-		moc_ptabaccess.o \
-		moc_ptabalert.o \
-		moc_ptabenv.o \
-		moc_ptabmain.o
+		moc_tab1main.o \
+		moc_tab2env.o \
+		moc_tab3alert.o \
+		moc_tab4access.o
 DIST          = /home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/common/unix.conf \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/common/linux.conf \
@@ -440,18 +450,22 @@ DIST          = /home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/features/exceptions.prf \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/features/yacc.prf \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/features/lex.prf \
-		../../../../ESSMonitor.pro ../../loginwindow.h \
+		../../../../ESSMonitor.pro ../../batteryrackwidget.h \
+		../../essmapwidget.h \
+		../../loginwindow.h \
 		../../mainwindow.h \
-		../../ptabaccess.h \
-		../../ptabalert.h \
-		../../ptabenv.h \
-		../../ptabmain.h ../../loginwindow.cpp \
+		../../tab1main.h \
+		../../tab2env.h \
+		../../tab3alert.h \
+		../../tab4access.h ../../batteryrackwidget.cpp \
+		../../essmapwidget.cpp \
+		../../loginwindow.cpp \
 		../../main.cpp \
 		../../mainwindow.cpp \
-		../../ptabaccess.cpp \
-		../../ptabalert.cpp \
-		../../ptabenv.cpp \
-		../../ptabmain.cpp
+		../../tab1main.cpp \
+		../../tab2env.cpp \
+		../../tab3alert.cpp \
+		../../tab4access.cpp
 QMAKE_TARGET  = ESSMonitor
 DESTDIR       = 
 TARGET        = ESSMonitor
@@ -460,7 +474,7 @@ TARGET        = ESSMonitor
 first: all
 ####### Build rules
 
-ESSMonitor: ui_loginwindow.h ui_mainwindow.h ui_ptabaccess.h ui_ptabalert.h ui_ptabenv.h ui_ptabmain.h $(OBJECTS)  
+ESSMonitor: ui_batteryrackwidget.h ui_essmapwidget.h ui_loginwindow.h ui_mainwindow.h ui_tab1main.h ui_tab2env.h ui_tab3alert.h ui_tab4access.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET)  $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../../ESSMonitor.pro /home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++/qmake.conf /home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/features/spec_pre.prf \
@@ -827,8 +841,13 @@ Makefile: ../../ESSMonitor.pro /home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++/q
 		/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/features/yacc.prf \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/features/lex.prf \
 		../../ESSMonitor.pro \
+		../../resources.qrc \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Charts.prl \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6OpenGLWidgets.prl \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Widgets.prl \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6OpenGL.prl \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Gui.prl \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Sql.prl \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Core.prl
 	$(QMAKE) -o Makefile ../../ESSMonitor.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
 /home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/features/spec_pre.prf:
@@ -1195,8 +1214,13 @@ Makefile: ../../ESSMonitor.pro /home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++/q
 /home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/features/yacc.prf:
 /home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/features/lex.prf:
 ../../ESSMonitor.pro:
+../../resources.qrc:
+/home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Charts.prl:
+/home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6OpenGLWidgets.prl:
 /home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Widgets.prl:
+/home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6OpenGL.prl:
 /home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Gui.prl:
+/home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Sql.prl:
 /home/ubuntu/Qt6/6.8.3/gcc_64/lib/libQt6Core.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ../../ESSMonitor.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
@@ -1212,10 +1236,11 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
+	$(COPY_FILE) --parents ../../resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../loginwindow.h ../../mainwindow.h ../../ptabaccess.h ../../ptabalert.h ../../ptabenv.h ../../ptabmain.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../loginwindow.cpp ../../main.cpp ../../mainwindow.cpp ../../ptabaccess.cpp ../../ptabalert.cpp ../../ptabenv.cpp ../../ptabmain.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../loginwindow.ui ../../mainwindow.ui ../../ptabaccess.ui ../../ptabalert.ui ../../ptabenv.ui ../../ptabmain.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../../batteryrackwidget.h ../../essmapwidget.h ../../loginwindow.h ../../mainwindow.h ../../tab1main.h ../../tab2env.h ../../tab3alert.h ../../tab4access.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../batteryrackwidget.cpp ../../essmapwidget.cpp ../../loginwindow.cpp ../../main.cpp ../../mainwindow.cpp ../../tab1main.cpp ../../tab2env.cpp ../../tab3alert.cpp ../../tab4access.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../batteryrackwidget.ui ../../essmapwidget.ui ../../loginwindow.ui ../../mainwindow.ui ../../tab1main.ui ../../tab2env.ui ../../tab3alert.ui ../../tab4access.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -1239,17 +1264,411 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all:
+compiler_rcc_make_all: qrc_resources.cpp
 compiler_rcc_clean:
+	-$(DEL_FILE) qrc_resources.cpp
+qrc_resources.cpp: ../../resources.qrc \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/rcc \
+		../../img/ess_map.jpg
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/rcc -name resources ../../resources.qrc -o qrc_resources.cpp
+
 compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: /home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++1z -Wall -Wextra -fPIC -dM -E -o moc_predefs.h /home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_loginwindow.cpp moc_mainwindow.cpp moc_ptabaccess.cpp moc_ptabalert.cpp moc_ptabenv.cpp moc_ptabmain.cpp
+compiler_moc_header_make_all: moc_batteryrackwidget.cpp moc_essmapwidget.cpp moc_loginwindow.cpp moc_mainwindow.cpp moc_tab1main.cpp moc_tab2env.cpp moc_tab3alert.cpp moc_tab4access.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_loginwindow.cpp moc_mainwindow.cpp moc_ptabaccess.cpp moc_ptabalert.cpp moc_ptabenv.cpp moc_ptabmain.cpp
+	-$(DEL_FILE) moc_batteryrackwidget.cpp moc_essmapwidget.cpp moc_loginwindow.cpp moc_mainwindow.cpp moc_tab1main.cpp moc_tab2env.cpp moc_tab3alert.cpp moc_tab4access.cpp
+moc_batteryrackwidget.cpp: ../../batteryrackwidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qwidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtguiglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtconfiginclude.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qconfig.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtcore-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtdeprecationdefinitions.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qassert.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtnoop.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtypes.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtversion.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsysinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlogging.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qflags.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qyieldcpu.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qforeach.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qttypetraits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmalloc.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qminmax.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnumeric.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qoverload.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qswap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtresource.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qttranslation.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qversiontagging.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtgui-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtguiexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qwindowdefs.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnamespace.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompare.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcomparehelpers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20type_traits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobject.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstring.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qchar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearray.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrefcount.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydata.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpair.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydataops.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20functional.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20memory.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringfwd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringliteral.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlatin1stringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qanystringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringconverter.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringconverter_base.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiterator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringlist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreevent.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetatype.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdatastream.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfloat16.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmath.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiterable.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qscopeguard.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobject_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbindingstorage.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmargins.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q23utility.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20utility.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qaction.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qkeysequence.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qicon.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsize.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpixmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrect.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpoint.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qcolor.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qrgb.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qrgba64.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qshareddata.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qimage.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpixelformat.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtransform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpolygon.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qregion.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qspan.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20iterator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qline.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qvariant.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdebug.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtextstream.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qset.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qhash.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpalette.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qbrush.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfont.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qendian.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfontmetrics.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfontinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qcursor.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qbitmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qevent.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiodevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qurl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qeventpoint.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvector2d.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvectornd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpointingdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qscreen.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QList \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QObject \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QRect \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QSize \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QSizeF \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QTransform \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnativeinterface.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qscreen_platform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreapplication.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdeadlinetimer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qelapsedtimer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qeventloop.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreapplication_platform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfuture.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfutureinterface.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmutex.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtsan_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qresultstore.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfuture_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qthreadpool.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qthread.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrunnable.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qexception.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpromise.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputmethod.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlocale.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
+		moc_predefs.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc $(DEFINES) --include /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/moc_predefs.h -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++ -I/home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGLWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGL -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../batteryrackwidget.h -o moc_batteryrackwidget.cpp
+
+moc_essmapwidget.cpp: ../../essmapwidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qwidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtguiglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtconfiginclude.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qconfig.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtcore-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtdeprecationdefinitions.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qassert.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtnoop.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtypes.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtversion.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsysinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlogging.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qflags.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qyieldcpu.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qforeach.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qttypetraits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmalloc.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qminmax.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnumeric.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qoverload.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qswap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtresource.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qttranslation.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qversiontagging.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtgui-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtguiexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qwindowdefs.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnamespace.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompare.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcomparehelpers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20type_traits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobject.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstring.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qchar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearray.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrefcount.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydata.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpair.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydataops.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20functional.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20memory.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringfwd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringliteral.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlatin1stringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qanystringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringconverter.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringconverter_base.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiterator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringlist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreevent.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetatype.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdatastream.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfloat16.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmath.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiterable.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qscopeguard.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobject_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbindingstorage.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmargins.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q23utility.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20utility.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qaction.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qkeysequence.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qicon.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsize.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpixmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrect.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpoint.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qcolor.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qrgb.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qrgba64.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qshareddata.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qimage.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpixelformat.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtransform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpolygon.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qregion.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qspan.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20iterator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qline.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qvariant.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdebug.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtextstream.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qset.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qhash.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpalette.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qbrush.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfont.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qendian.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfontmetrics.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfontinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qcursor.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qbitmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qevent.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiodevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qurl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qeventpoint.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvector2d.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvectornd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpointingdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qscreen.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QList \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QObject \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QRect \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QSize \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QSizeF \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QTransform \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnativeinterface.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qscreen_platform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreapplication.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdeadlinetimer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qelapsedtimer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qeventloop.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreapplication_platform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfuture.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfutureinterface.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmutex.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtsan_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qresultstore.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfuture_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qthreadpool.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qthread.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrunnable.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qexception.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpromise.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputmethod.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlocale.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
+		moc_predefs.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc $(DEFINES) --include /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/moc_predefs.h -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++ -I/home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGLWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGL -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../essmapwidget.h -o moc_essmapwidget.cpp
+
 moc_loginwindow.cpp: ../../loginwindow.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qwidget.h \
@@ -1442,7 +1861,7 @@ moc_loginwindow.cpp: ../../loginwindow.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
 		moc_predefs.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc
-	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc $(DEFINES) --include /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/moc_predefs.h -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++ -I/home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../loginwindow.h -o moc_loginwindow.cpp
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc $(DEFINES) --include /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/moc_predefs.h -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++ -I/home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGLWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGL -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../loginwindow.h -o moc_loginwindow.cpp
 
 moc_mainwindow.cpp: ../../mainwindow.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QMainWindow \
@@ -1636,11 +2055,88 @@ moc_mainwindow.cpp: ../../mainwindow.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlocale.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabwidget.h \
+		../../tab4access.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
+		../../tab3alert.h \
+		../../tab2env.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlDatabase \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqldatabase.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsqlglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsql-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsqlexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetaobject.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlQuery \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqlquery.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlError \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqlerror.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QDateTime \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdatetime.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcalendar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChartView \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchartview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QAbstractAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qabstractaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChartGlobal \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchartglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qtcharts-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qtchartsexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QPen \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpen.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QFont \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QVariant \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QAbstractSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qabstractseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChart \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchart.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QLegend \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qlegend.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QGraphicsWidget \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicswidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicslayoutitem.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsitem.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpainterpath.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QBrush \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QMargins \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QGraphicsView \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpainter.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtextoption.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qscrollarea.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qframe.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsscene.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QLineSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qlineseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QXYSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qxyseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QImage \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QDateTimeAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qdatetimeaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QValueAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qvalueaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QTableWidgetItem \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtablewidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtableview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qstyleoption.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvalidator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qregularexpression.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qslider.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractslider.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qstyle.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabbar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QDebug \
+		../../tab1main.h \
 		moc_predefs.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc
-	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc $(DEFINES) --include /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/moc_predefs.h -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++ -I/home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../mainwindow.h -o moc_mainwindow.cpp
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc $(DEFINES) --include /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/moc_predefs.h -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++ -I/home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGLWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGL -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../mainwindow.h -o moc_mainwindow.cpp
 
-moc_ptabaccess.cpp: ../../ptabaccess.h \
+moc_tab1main.cpp: ../../tab1main.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qwidget.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -1832,9 +2328,276 @@ moc_ptabaccess.cpp: ../../ptabaccess.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
 		moc_predefs.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc
-	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc $(DEFINES) --include /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/moc_predefs.h -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++ -I/home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../ptabaccess.h -o moc_ptabaccess.cpp
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc $(DEFINES) --include /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/moc_predefs.h -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++ -I/home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGLWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGL -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../tab1main.h -o moc_tab1main.cpp
 
-moc_ptabalert.cpp: ../../ptabalert.h \
+moc_tab2env.cpp: ../../tab2env.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qwidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtguiglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtconfiginclude.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qconfig.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtcore-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtdeprecationdefinitions.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qassert.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtnoop.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtypes.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtversion.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsysinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlogging.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qflags.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qyieldcpu.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qforeach.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qttypetraits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmalloc.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qminmax.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnumeric.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qoverload.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qswap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtresource.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qttranslation.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qversiontagging.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtgui-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtguiexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qwindowdefs.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnamespace.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompare.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcomparehelpers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20type_traits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobject.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstring.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qchar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearray.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrefcount.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydata.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpair.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydataops.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20functional.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20memory.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringfwd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringliteral.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlatin1stringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qanystringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringconverter.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringconverter_base.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiterator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringlist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreevent.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetatype.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdatastream.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfloat16.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmath.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiterable.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qscopeguard.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobject_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbindingstorage.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmargins.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q23utility.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20utility.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qaction.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qkeysequence.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qicon.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsize.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpixmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrect.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpoint.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qcolor.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qrgb.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qrgba64.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qshareddata.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qimage.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpixelformat.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtransform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpolygon.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qregion.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qspan.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20iterator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qline.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qvariant.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdebug.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtextstream.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qset.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qhash.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpalette.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qbrush.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfont.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qendian.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfontmetrics.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfontinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qcursor.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qbitmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qevent.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiodevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qurl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qeventpoint.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvector2d.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvectornd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpointingdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qscreen.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QList \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QObject \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QRect \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QSize \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QSizeF \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QTransform \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnativeinterface.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qscreen_platform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreapplication.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdeadlinetimer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qelapsedtimer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qeventloop.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreapplication_platform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfuture.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfutureinterface.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmutex.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtsan_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qresultstore.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfuture_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qthreadpool.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qthread.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrunnable.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qexception.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpromise.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputmethod.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlocale.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlDatabase \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqldatabase.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsqlglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsql-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsqlexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetaobject.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlQuery \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqlquery.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlError \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqlerror.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QDateTime \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdatetime.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcalendar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChartView \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchartview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QAbstractAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qabstractaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChartGlobal \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchartglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qtcharts-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qtchartsexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QPen \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpen.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QFont \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QVariant \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QAbstractSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qabstractseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChart \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchart.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QLegend \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qlegend.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QGraphicsWidget \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicswidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicslayoutitem.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsitem.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpainterpath.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QBrush \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QMargins \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QGraphicsView \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpainter.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtextoption.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qscrollarea.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qframe.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsscene.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QLineSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qlineseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QXYSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qxyseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QImage \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QDateTimeAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qdatetimeaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QValueAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qvalueaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QTableWidgetItem \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtablewidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtableview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qstyleoption.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvalidator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qregularexpression.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qslider.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractslider.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qstyle.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabbar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabwidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QDebug \
+		moc_predefs.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc $(DEFINES) --include /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/moc_predefs.h -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++ -I/home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGLWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGL -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../tab2env.h -o moc_tab2env.cpp
+
+moc_tab3alert.cpp: ../../tab3alert.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qwidget.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -2026,9 +2789,9 @@ moc_ptabalert.cpp: ../../ptabalert.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
 		moc_predefs.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc
-	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc $(DEFINES) --include /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/moc_predefs.h -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++ -I/home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../ptabalert.h -o moc_ptabalert.cpp
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc $(DEFINES) --include /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/moc_predefs.h -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++ -I/home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGLWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGL -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../tab3alert.h -o moc_tab3alert.cpp
 
-moc_ptabenv.cpp: ../../ptabenv.h \
+moc_tab4access.cpp: ../../tab4access.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qwidget.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -2220,209 +2983,23 @@ moc_ptabenv.cpp: ../../ptabenv.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
 		moc_predefs.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc
-	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc $(DEFINES) --include /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/moc_predefs.h -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++ -I/home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../ptabenv.h -o moc_ptabenv.cpp
-
-moc_ptabmain.cpp: ../../ptabmain.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qwidget.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtguiglobal.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qglobal.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtversionchecks.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtconfiginclude.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qconfig.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtcore-config.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtconfigmacros.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtdeprecationdefinitions.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtcoreexports.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompilerdetection.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qprocessordetection.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsystemdetection.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtdeprecationmarkers.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtclasshelpermacros.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtpreprocessorsupport.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qassert.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtnoop.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtypes.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtversion.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtypeinfo.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainerfwd.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsysinfo.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlogging.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qflags.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompare_impl.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qatomic.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbasicatomic.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qgenericatomic.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qyieldcpu.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qconstructormacros.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdarwinhelpers.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qexceptionhandling.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qforeach.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qttypetraits.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfunctionpointer.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qglobalstatic.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmalloc.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qminmax.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnumeric.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qoverload.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qswap.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtenvironmentvariables.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtresource.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qttranslation.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qversiontagging.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtgui-config.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtguiexports.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgets-config.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsexports.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qwindowdefs.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobjectdefs.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnamespace.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompare.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcomparehelpers.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20type_traits.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtmetamacros.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfunctionaltools_impl.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobject.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstring.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qchar.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringview.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearray.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrefcount.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydata.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpair.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydatapointer.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydataops.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainertools_impl.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qxptype_traits.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20functional.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20memory.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearrayalgorithms.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearrayview.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringfwd.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringliteral.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringalgorithms.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlatin1stringview.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qanystringview.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qutf8stringview.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringtokenizer.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringbuilder.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringconverter.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringconverter_base.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlist.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qhashfunctions.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiterator.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearraylist.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringlist.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qalgorithms.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringmatcher.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreevent.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qscopedpointer.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetatype.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdatastream.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiodevicebase.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfloat16.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmath.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiterable.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetacontainer.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainerinfo.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtaggedpointer.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qscopeguard.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobject_impl.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbindingstorage.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmargins.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q23utility.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20utility.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qaction.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qkeysequence.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qicon.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsize.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpixmap.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpaintdevice.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrect.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpoint.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qcolor.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qrgb.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qrgba64.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qshareddata.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qimage.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpixelformat.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtransform.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpolygon.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qregion.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qspan.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20iterator.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qline.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qvariant.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdebug.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtextstream.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontiguouscache.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsharedpointer.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmap.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qshareddata_impl.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qset.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qhash.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qvarlengtharray.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpalette.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qbrush.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfont.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qendian.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfontmetrics.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfontinfo.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qsizepolicy.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qcursor.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qbitmap.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qevent.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiodevice.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qurl.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qeventpoint.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvector2d.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvectornd.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpointingdevice.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputdevice.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qscreen.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QList \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QObject \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QRect \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QSize \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QSizeF \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QTransform \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnativeinterface.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qscreen_platform.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreapplication.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdeadlinetimer.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qelapsedtimer.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qeventloop.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreapplication_platform.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfuture.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfutureinterface.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmutex.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtsan_impl.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qresultstore.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfuture_impl.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qthreadpool.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qthread.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrunnable.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qexception.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpromise.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputmethod.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlocale.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
-		moc_predefs.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc
-	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc $(DEFINES) --include /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/moc_predefs.h -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++ -I/home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../ptabmain.h -o moc_ptabmain.cpp
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/moc $(DEFINES) --include /home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor/build/Qt_6_8_3-Debug/moc_predefs.h -I/home/ubuntu/Qt6/6.8.3/gcc_64/mkspecs/linux-g++ -I/home/ubuntu/ess_ws/2512_4th_proj_chanmi/src/ess_server/qt/ESSMonitor -I/home/ubuntu/Qt6/6.8.3/gcc_64/include -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGLWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtOpenGL -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql -I/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../tab4access.h -o moc_tab4access.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_loginwindow.h ui_mainwindow.h ui_ptabaccess.h ui_ptabalert.h ui_ptabenv.h ui_ptabmain.h
+compiler_uic_make_all: ui_batteryrackwidget.h ui_essmapwidget.h ui_loginwindow.h ui_mainwindow.h ui_tab1main.h ui_tab2env.h ui_tab3alert.h ui_tab4access.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_loginwindow.h ui_mainwindow.h ui_ptabaccess.h ui_ptabalert.h ui_ptabenv.h ui_ptabmain.h
+	-$(DEL_FILE) ui_batteryrackwidget.h ui_essmapwidget.h ui_loginwindow.h ui_mainwindow.h ui_tab1main.h ui_tab2env.h ui_tab3alert.h ui_tab4access.h
+ui_batteryrackwidget.h: ../../batteryrackwidget.ui \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic ../../batteryrackwidget.ui -o ui_batteryrackwidget.h
+
+ui_essmapwidget.h: ../../essmapwidget.ui \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic ../../essmapwidget.ui -o ui_essmapwidget.h
+
 ui_loginwindow.h: ../../loginwindow.ui \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic
 	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic ../../loginwindow.ui -o ui_loginwindow.h
@@ -2431,21 +3008,21 @@ ui_mainwindow.h: ../../mainwindow.ui \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic
 	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic ../../mainwindow.ui -o ui_mainwindow.h
 
-ui_ptabaccess.h: ../../ptabaccess.ui \
+ui_tab1main.h: ../../tab1main.ui \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic
-	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic ../../ptabaccess.ui -o ui_ptabaccess.h
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic ../../tab1main.ui -o ui_tab1main.h
 
-ui_ptabalert.h: ../../ptabalert.ui \
+ui_tab2env.h: ../../tab2env.ui \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic
-	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic ../../ptabalert.ui -o ui_ptabalert.h
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic ../../tab2env.ui -o ui_tab2env.h
 
-ui_ptabenv.h: ../../ptabenv.ui \
+ui_tab3alert.h: ../../tab3alert.ui \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic
-	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic ../../ptabenv.ui -o ui_ptabenv.h
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic ../../tab3alert.ui -o ui_tab3alert.h
 
-ui_ptabmain.h: ../../ptabmain.ui \
+ui_tab4access.h: ../../tab4access.ui \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic
-	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic ../../ptabmain.ui -o ui_ptabmain.h
+	/home/ubuntu/Qt6/6.8.3/gcc_64/libexec/uic ../../tab4access.ui -o ui_tab4access.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
@@ -2453,9 +3030,395 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
+
+batteryrackwidget.o: ../../batteryrackwidget.cpp ../../batteryrackwidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qwidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtguiglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtconfiginclude.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qconfig.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtcore-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtdeprecationdefinitions.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qassert.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtnoop.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtypes.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtversion.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsysinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlogging.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qflags.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qyieldcpu.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qforeach.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qttypetraits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmalloc.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qminmax.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnumeric.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qoverload.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qswap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtresource.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qttranslation.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qversiontagging.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtgui-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtguiexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qwindowdefs.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnamespace.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompare.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcomparehelpers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20type_traits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobject.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstring.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qchar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearray.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrefcount.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydata.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpair.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydataops.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20functional.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20memory.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringfwd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringliteral.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlatin1stringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qanystringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringconverter.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringconverter_base.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiterator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringlist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreevent.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetatype.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdatastream.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfloat16.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmath.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiterable.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qscopeguard.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobject_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbindingstorage.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmargins.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q23utility.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20utility.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qaction.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qkeysequence.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qicon.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsize.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpixmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrect.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpoint.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qcolor.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qrgb.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qrgba64.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qshareddata.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qimage.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpixelformat.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtransform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpolygon.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qregion.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qspan.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20iterator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qline.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qvariant.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdebug.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtextstream.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qset.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qhash.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpalette.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qbrush.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfont.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qendian.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfontmetrics.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfontinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qcursor.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qbitmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qevent.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiodevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qurl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qeventpoint.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvector2d.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvectornd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpointingdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qscreen.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QList \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QObject \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QRect \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QSize \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QSizeF \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QTransform \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnativeinterface.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qscreen_platform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreapplication.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdeadlinetimer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qelapsedtimer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qeventloop.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreapplication_platform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfuture.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfutureinterface.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmutex.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtsan_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qresultstore.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfuture_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qthreadpool.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qthread.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrunnable.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qexception.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpromise.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputmethod.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlocale.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
+		ui_batteryrackwidget.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o batteryrackwidget.o ../../batteryrackwidget.cpp
+
+essmapwidget.o: ../../essmapwidget.cpp ../../essmapwidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qwidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtguiglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtconfiginclude.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qconfig.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtcore-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtdeprecationdefinitions.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qassert.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtnoop.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtypes.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtversion.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsysinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlogging.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qflags.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qyieldcpu.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qforeach.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qttypetraits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmalloc.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qminmax.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnumeric.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qoverload.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qswap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtresource.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qttranslation.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qversiontagging.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtgui-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtguiexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qwindowdefs.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnamespace.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcompare.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcomparehelpers.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20type_traits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobject.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstring.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qchar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearray.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrefcount.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydata.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpair.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qarraydataops.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20functional.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20memory.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringfwd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringliteral.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlatin1stringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qanystringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringconverter.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringconverter_base.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiterator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringlist.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qalgorithms.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreevent.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetatype.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdatastream.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfloat16.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmath.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiterable.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qscopeguard.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qobject_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qbindingstorage.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmargins.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q23utility.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20utility.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qaction.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qkeysequence.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qicon.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsize.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpixmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrect.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpoint.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qcolor.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qrgb.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qrgba64.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qshareddata.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qimage.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpixelformat.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtransform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpolygon.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qregion.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qspan.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/q20iterator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qline.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qvariant.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdebug.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtextstream.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qset.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qhash.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpalette.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qbrush.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfont.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qendian.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfontmetrics.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qfontinfo.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qcursor.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qbitmap.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qevent.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qiodevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qurl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qeventpoint.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvector2d.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvectornd.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpointingdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputdevice.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qscreen.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QList \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QObject \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QRect \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QSize \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QSizeF \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QTransform \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qnativeinterface.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qscreen_platform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreapplication.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdeadlinetimer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qelapsedtimer.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qeventloop.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcoreapplication_platform.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfuture.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfutureinterface.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmutex.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtsan_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qresultstore.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qfuture_impl.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qthreadpool.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qthread.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qrunnable.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qexception.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qpromise.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputmethod.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlocale.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
+		ui_essmapwidget.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o essmapwidget.o ../../essmapwidget.cpp
 
 loginwindow.o: ../../loginwindow.cpp ../../loginwindow.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
@@ -2675,7 +3638,79 @@ loginwindow.o: ../../loginwindow.cpp ../../loginwindow.h \
 		../../mainwindow.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QMainWindow \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qmainwindow.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabwidget.h
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabwidget.h \
+		../../tab4access.h \
+		../../tab3alert.h \
+		../../tab2env.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlDatabase \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqldatabase.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsqlglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsql-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsqlexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetaobject.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlQuery \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqlquery.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlError \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqlerror.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QDateTime \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdatetime.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcalendar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChartView \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchartview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QAbstractAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qabstractaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChartGlobal \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchartglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qtcharts-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qtchartsexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QPen \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QFont \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QAbstractSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qabstractseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChart \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchart.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QLegend \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qlegend.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QGraphicsWidget \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicswidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicslayoutitem.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsitem.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpainterpath.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QBrush \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QMargins \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QGraphicsView \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpainter.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qscrollarea.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsscene.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QLineSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qlineseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QXYSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qxyseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QImage \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QDateTimeAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qdatetimeaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QValueAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qvalueaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QTableWidgetItem \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtablewidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtableview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qstyleoption.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvalidator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qregularexpression.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qslider.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractslider.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qstyle.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabbar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QDebug \
+		../../tab1main.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o loginwindow.o ../../loginwindow.cpp
 
 main.o: ../../main.cpp ../../loginwindow.h \
@@ -3064,8 +4099,84 @@ mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlocale.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabwidget.h \
-		ui_mainwindow.h \
+		../../tab4access.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
+		../../tab3alert.h \
+		../../tab2env.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlDatabase \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqldatabase.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsqlglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsql-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsqlexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetaobject.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlQuery \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqlquery.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlError \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqlerror.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QDateTime \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdatetime.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcalendar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChartView \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchartview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QAbstractAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qabstractaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChartGlobal \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchartglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qtcharts-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qtchartsexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QPen \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpen.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QFont \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QVariant \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QAbstractSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qabstractseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChart \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchart.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QLegend \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qlegend.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QGraphicsWidget \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicswidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicslayoutitem.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsitem.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpainterpath.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QBrush \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QMargins \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QGraphicsView \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpainter.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtextoption.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qscrollarea.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qframe.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsscene.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QLineSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qlineseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QXYSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qxyseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QImage \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QDateTimeAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qdatetimeaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QValueAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qvalueaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QTableWidgetItem \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtablewidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtableview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qstyleoption.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvalidator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qregularexpression.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qslider.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractslider.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qstyle.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabbar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QDebug \
+		../../tab1main.h \
+		ui_mainwindow.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QApplication \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qapplication.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QTabWidget \
@@ -3073,11 +4184,10 @@ mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qboxlayout.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qlayout.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qlayoutitem.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgridlayout.h \
-		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgridlayout.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../../mainwindow.cpp
 
-ptabaccess.o: ../../ptabaccess.cpp ../../ptabaccess.h \
+tab1main.o: ../../tab1main.cpp ../../tab1main.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qwidget.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -3267,10 +4377,25 @@ ptabaccess.o: ../../ptabaccess.cpp ../../ptabaccess.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputmethod.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlocale.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
-		ui_ptabaccess.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ptabaccess.o ../../ptabaccess.cpp
+		ui_tab1main.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QVariant \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QApplication \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qapplication.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QHBoxLayout \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qboxlayout.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qlayout.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgridlayout.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QLabel \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qlabel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qframe.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpicture.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtextdocument.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QSpacerItem \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QVBoxLayout
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tab1main.o ../../tab1main.cpp
 
-ptabalert.o: ../../ptabalert.cpp ../../ptabalert.h \
+tab2env.o: ../../tab2env.cpp ../../tab2env.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qwidget.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -3460,10 +4585,102 @@ ptabalert.o: ../../ptabalert.cpp ../../ptabalert.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputmethod.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlocale.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
-		ui_ptabalert.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ptabalert.o ../../ptabalert.cpp
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlDatabase \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqldatabase.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsqlglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsql-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qtsqlexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qmetaobject.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlQuery \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqlquery.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/QSqlError \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtSql/qsqlerror.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QDateTime \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdatetime.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcalendar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChartView \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchartview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QAbstractAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qabstractaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChartGlobal \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchartglobal.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qtcharts-config.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qtchartsexports.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QPen \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpen.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QFont \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QVariant \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QAbstractSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qabstractseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QChart \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qchart.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QLegend \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qlegend.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QGraphicsWidget \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicswidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicslayoutitem.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsitem.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpainterpath.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QBrush \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QMargins \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QGraphicsView \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qpainter.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qtextoption.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qscrollarea.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qframe.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgraphicsscene.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QLineSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qlineseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QXYSeries \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qxyseries.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/QImage \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QDateTimeAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qdatetimeaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/QValueAxis \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCharts/qvalueaxis.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QTableWidgetItem \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtablewidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtableview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qstyleoption.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvalidator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qregularexpression.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qslider.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractslider.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qstyle.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabbar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabwidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QDebug \
+		ui_tab2env.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QDate \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QApplication \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qapplication.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QDateTimeEdit \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qdatetimeedit.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtimezone.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QHBoxLayout \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qboxlayout.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qlayout.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgridlayout.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QHeaderView \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qheaderview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QPushButton \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qpushbutton.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QSpacerItem \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QTableWidget \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QVBoxLayout
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tab2env.o ../../tab2env.cpp
 
-ptabenv.o: ../../ptabenv.cpp ../../ptabenv.h \
+tab3alert.o: ../../tab3alert.cpp ../../tab3alert.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qwidget.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -3653,10 +4870,52 @@ ptabenv.o: ../../ptabenv.cpp ../../ptabenv.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputmethod.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlocale.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
-		ui_ptabenv.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ptabenv.o ../../ptabenv.cpp
+		ui_tab3alert.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QDate \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdatetime.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcalendar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QVariant \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QApplication \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qapplication.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QComboBox \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qcombobox.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qstyleoption.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvalidator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qregularexpression.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qslider.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractslider.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qstyle.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabbar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabwidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qframe.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QDateTimeEdit \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qdatetimeedit.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtimezone.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QHBoxLayout \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qboxlayout.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qlayout.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgridlayout.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QHeaderView \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qheaderview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QPushButton \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qpushbutton.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QSpacerItem \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QTableWidget \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtablewidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtableview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QVBoxLayout
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tab3alert.o ../../tab3alert.cpp
 
-ptabmain.o: ../../ptabmain.cpp ../../ptabmain.h \
+tab4access.o: ../../tab4access.cpp ../../tab4access.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QWidget \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qwidget.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -3846,8 +5105,59 @@ ptabmain.o: ../../ptabmain.cpp ../../ptabmain.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qinputmethod.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qlocale.h \
 		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qguiapplication_platform.h \
-		ui_ptabmain.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ptabmain.o ../../ptabmain.cpp
+		ui_tab4access.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QDate \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qdatetime.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qcalendar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/QVariant \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QApplication \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qapplication.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QComboBox \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qcombobox.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qstyleoption.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtGui/qvalidator.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qregularexpression.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qslider.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractslider.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qstyle.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabbar.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtabwidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qframe.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QDateTimeEdit \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qdatetimeedit.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qtimezone.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QHBoxLayout \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qboxlayout.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qlayout.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qgridlayout.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QHeaderView \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qheaderview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QPushButton \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qpushbutton.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QSpacerItem \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QTableWidget \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtablewidget.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/qtableview.h \
+		/home/ubuntu/Qt6/6.8.3/gcc_64/include/QtWidgets/QVBoxLayout
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tab4access.o ../../tab4access.cpp
+
+qrc_resources.o: qrc_resources.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp
+
+moc_batteryrackwidget.o: moc_batteryrackwidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_batteryrackwidget.o moc_batteryrackwidget.cpp
+
+moc_essmapwidget.o: moc_essmapwidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_essmapwidget.o moc_essmapwidget.cpp
 
 moc_loginwindow.o: moc_loginwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_loginwindow.o moc_loginwindow.cpp
@@ -3855,17 +5165,17 @@ moc_loginwindow.o: moc_loginwindow.cpp
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
 
-moc_ptabaccess.o: moc_ptabaccess.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ptabaccess.o moc_ptabaccess.cpp
+moc_tab1main.o: moc_tab1main.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_tab1main.o moc_tab1main.cpp
 
-moc_ptabalert.o: moc_ptabalert.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ptabalert.o moc_ptabalert.cpp
+moc_tab2env.o: moc_tab2env.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_tab2env.o moc_tab2env.cpp
 
-moc_ptabenv.o: moc_ptabenv.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ptabenv.o moc_ptabenv.cpp
+moc_tab3alert.o: moc_tab3alert.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_tab3alert.o moc_tab3alert.cpp
 
-moc_ptabmain.o: moc_ptabmain.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ptabmain.o moc_ptabmain.cpp
+moc_tab4access.o: moc_tab4access.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_tab4access.o moc_tab4access.cpp
 
 ####### Install
 

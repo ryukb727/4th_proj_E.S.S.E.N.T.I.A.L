@@ -44,7 +44,7 @@ public:
     QWidget *widget_3;
     QWidget *verticalLayoutWidget_9;
     QVBoxLayout *verticalLayout_7;
-    QHBoxLayout *horizontalLayout_2;
+    QVBoxLayout *verticalLayout_8;
     QLabel *label;
     QHBoxLayout *horizontalLayout_7;
     QVBoxLayout *verticalLayout;
@@ -75,7 +75,7 @@ public:
     {
         if (pTabMain->objectName().isEmpty())
             pTabMain->setObjectName("pTabMain");
-        pTabMain->resize(1031, 499);
+        pTabMain->resize(676, 487);
         pMap = new QLabel(pTabMain);
         pMap->setObjectName("pMap");
         pMap->setGeometry(QRect(20, 10, 371, 251));
@@ -101,7 +101,7 @@ public:
         pZone3->setGeometry(QRect(270, 20, 120, 121));
         horizontalLayoutWidget = new QWidget(pTabMain);
         horizontalLayoutWidget->setObjectName("horizontalLayoutWidget");
-        horizontalLayoutWidget->setGeometry(QRect(40, 280, 341, 181));
+        horizontalLayoutWidget->setGeometry(QRect(20, 280, 371, 181));
         horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
         horizontalLayout->setObjectName("horizontalLayout");
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
@@ -167,19 +167,19 @@ public:
 
         verticalLayoutWidget_9 = new QWidget(pTabMain);
         verticalLayoutWidget_9->setObjectName("verticalLayoutWidget_9");
-        verticalLayoutWidget_9->setGeometry(QRect(440, 30, 201, 431));
+        verticalLayoutWidget_9->setGeometry(QRect(440, 30, 211, 431));
         verticalLayout_7 = new QVBoxLayout(verticalLayoutWidget_9);
         verticalLayout_7->setObjectName("verticalLayout_7");
         verticalLayout_7->setContentsMargins(0, 0, 0, 0);
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setObjectName("horizontalLayout_2");
+        verticalLayout_8 = new QVBoxLayout();
+        verticalLayout_8->setObjectName("verticalLayout_8");
         label = new QLabel(verticalLayoutWidget_9);
         label->setObjectName("label");
 
-        horizontalLayout_2->addWidget(label);
+        verticalLayout_8->addWidget(label);
 
 
-        verticalLayout_7->addLayout(horizontalLayout_2);
+        verticalLayout_7->addLayout(verticalLayout_8);
 
         horizontalLayout_7 = new QHBoxLayout();
         horizontalLayout_7->setObjectName("horizontalLayout_7");
@@ -301,6 +301,9 @@ public:
 
         verticalLayout_7->addLayout(horizontalLayout_10);
 
+        verticalLayout_7->setStretch(0, 2);
+        verticalLayout_7->setStretch(1, 5);
+        verticalLayout_7->setStretch(2, 5);
 
         retranslateUi(pTabMain);
 

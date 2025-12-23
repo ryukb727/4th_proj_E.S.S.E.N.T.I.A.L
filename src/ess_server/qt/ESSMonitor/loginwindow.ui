@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>pLoginWindow</class>
- <widget class="QWidget" name="pLoginWindow">
+ <class>LoginWindow</class>
+ <widget class="QWidget" name="LoginWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -125,7 +125,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="pLineEdit_PW"/>
+          <widget class="QLineEdit" name="pLineEdit_PW">
+           <property name="echoMode">
+            <enum>QLineEdit::EchoMode::Password</enum>
+           </property>
+          </widget>
          </item>
          <item>
           <spacer name="horizontalSpacer_9">

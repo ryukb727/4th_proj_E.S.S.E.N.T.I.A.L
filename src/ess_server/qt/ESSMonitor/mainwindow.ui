@@ -20,22 +20,22 @@
       <property name="currentIndex">
        <number>3</number>
       </property>
-      <widget class="QWidget" name="pTabMain">
+      <widget class="QWidget" name="pTab1">
        <attribute name="title">
         <string>Main</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="pTabEnv">
+      <widget class="QWidget" name="pTab2">
        <attribute name="title">
         <string>Environment</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="pTabAlert">
+      <widget class="QWidget" name="pTab3">
        <attribute name="title">
         <string>Alert</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="pTabAccess">
+      <widget class="QWidget" name="pTab4">
        <attribute name="title">
         <string>Access Log</string>
        </attribute>

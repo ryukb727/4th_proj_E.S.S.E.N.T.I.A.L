@@ -4,7 +4,7 @@
 #include <QWidget>
 
 namespace Ui {
-class pLoginWindow;
+class LoginWindow;
 }
 
 class LoginWindow : public QWidget
@@ -19,7 +19,7 @@ private slots:
     void on_pPBtton_Login_clicked();
 
 private:
-    Ui::pLoginWindow *ui;
+    Ui::LoginWindow *ui;
 };
 
 #endif // LOGINWINDOW_H

@@ -4,13 +4,13 @@
 
 LoginWindow::LoginWindow(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::pLoginWindow)
+    , ui(new Ui::LoginWindow)
 {
     ui->setupUi(this);
 
      this->setWindowTitle("Login");
 
-    connect(ui->pPBtton_Login, SIGNAL(clicked()), this, SLOT(on_pPBtton_Login_clicked()));
+    connect(ui->pLineEdit_PW, SIGNAL(returnPressed()), ui->pPBtton_Login, SLOT(click()));
 }
 
 LoginWindow::~LoginWindow()
@@ -20,20 +20,29 @@ LoginWindow::~LoginWindow()
 
 void LoginWindow::on_pPBtton_Login_clicked()
 {
+    static int cnt = 0;
     QString id = ui->pLineEdit_ID->text();
     QString pw = ui->pLineEdit_PW->text();
 
-    if(id == "kcci_admin" && pw == "kcci1234")
+    if(cnt < 4)
     {
-        MainWindow *pMainWindow = new MainWindow();
-        pMainWindow->show();
+        if(id == "ess_admin" && pw == "ess1234")
+        {
+            MainWindow *pMainWindow = new MainWindow();
+            pMainWindow->show();
 
-        this->close();
+            this->close();
+        }
+        else
+        {
+            cnt++;
+            ui->pLabel_status->setText(QString("Login Failed. Please retry. %1/5").arg(cnt));
+        }
     }
     else
     {
-        ui->pLabel_status->setText("Login Failed. Please retry.");
+        ui->pPBtton_Login->setEnabled(false);
+        ui->pLabel_status->setText("You have inserted wrong password 5times.");
     }
-
 }
 

@@ -24,10 +24,10 @@ public:
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout;
     QTabWidget *pTabWidget;
-    QWidget *pTabMain;
-    QWidget *pTabEnv;
-    QWidget *pTabAlert;
-    QWidget *pTabAccess;
+    QWidget *pTab1;
+    QWidget *pTab2;
+    QWidget *pTab3;
+    QWidget *pTab4;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -40,18 +40,18 @@ public:
         verticalLayout->setObjectName("verticalLayout");
         pTabWidget = new QTabWidget(centralwidget);
         pTabWidget->setObjectName("pTabWidget");
-        pTabMain = new QWidget();
-        pTabMain->setObjectName("pTabMain");
-        pTabWidget->addTab(pTabMain, QString());
-        pTabEnv = new QWidget();
-        pTabEnv->setObjectName("pTabEnv");
-        pTabWidget->addTab(pTabEnv, QString());
-        pTabAlert = new QWidget();
-        pTabAlert->setObjectName("pTabAlert");
-        pTabWidget->addTab(pTabAlert, QString());
-        pTabAccess = new QWidget();
-        pTabAccess->setObjectName("pTabAccess");
-        pTabWidget->addTab(pTabAccess, QString());
+        pTab1 = new QWidget();
+        pTab1->setObjectName("pTab1");
+        pTabWidget->addTab(pTab1, QString());
+        pTab2 = new QWidget();
+        pTab2->setObjectName("pTab2");
+        pTabWidget->addTab(pTab2, QString());
+        pTab3 = new QWidget();
+        pTab3->setObjectName("pTab3");
+        pTabWidget->addTab(pTab3, QString());
+        pTab4 = new QWidget();
+        pTab4->setObjectName("pTab4");
+        pTabWidget->addTab(pTab4, QString());
 
         verticalLayout->addWidget(pTabWidget);
 
@@ -68,10 +68,10 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        pTabWidget->setTabText(pTabWidget->indexOf(pTabMain), QCoreApplication::translate("MainWindow", "Main", nullptr));
-        pTabWidget->setTabText(pTabWidget->indexOf(pTabEnv), QCoreApplication::translate("MainWindow", "Environment", nullptr));
-        pTabWidget->setTabText(pTabWidget->indexOf(pTabAlert), QCoreApplication::translate("MainWindow", "Alert", nullptr));
-        pTabWidget->setTabText(pTabWidget->indexOf(pTabAccess), QCoreApplication::translate("MainWindow", "Access Log", nullptr));
+        pTabWidget->setTabText(pTabWidget->indexOf(pTab1), QCoreApplication::translate("MainWindow", "Main", nullptr));
+        pTabWidget->setTabText(pTabWidget->indexOf(pTab2), QCoreApplication::translate("MainWindow", "Environment", nullptr));
+        pTabWidget->setTabText(pTabWidget->indexOf(pTab3), QCoreApplication::translate("MainWindow", "Alert", nullptr));
+        pTabWidget->setTabText(pTabWidget->indexOf(pTab4), QCoreApplication::translate("MainWindow", "Access Log", nullptr));
     } // retranslateUi
 
 };
