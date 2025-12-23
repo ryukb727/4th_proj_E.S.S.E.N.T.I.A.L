@@ -38,12 +38,29 @@ def publish_environment():
 # ================================
 #  Alert Events (gas, thermal)
 # ================================
+
 GAS_WARNING = 300
 GAS_CRITICAL = 500
 
 THERMAL_WARNING = 60.0
 THERMAL_CRITICAL = 80.0
 
+def generate_location(event_type: str) -> str:
+    """
+    프로젝트 규칙에 맞는 location 생성
+    gas     -> zone_0 ~ zone_5
+    thermal -> rack_1_1 ~ rack_3_3
+    """
+    if event_type == "gas":
+        zone = random.randint(0, 5)
+        return f"zone_{zone}"
+
+    elif event_type == "thermal":
+        rack = random.randint(1, 3)
+        level = random.randint(1, 3)
+        return f"rack_{rack}_{level}"
+
+    return "unknown"
 
 def publish_alert(event_type: str, level: str, value: float):
     """
@@ -51,13 +68,16 @@ def publish_alert(event_type: str, level: str, value: float):
     event_type: "gas", "thermal"
     level: "warning" 또는 "critical"
     """
+    location = generate_location(event_type)
+
     alert = {
         "event_type": event_type,
         "level": level,
         "value": value,
-        "location": "ess_1",
+        "location": location,
         "message": f"{event_type.upper()} {level.upper()} - value={value}"
     }
+
 
     client.publish("ess/alert", json.dumps(alert))
     print(f"[Publish] ess/alert ({event_type}/{level}):", alert)
