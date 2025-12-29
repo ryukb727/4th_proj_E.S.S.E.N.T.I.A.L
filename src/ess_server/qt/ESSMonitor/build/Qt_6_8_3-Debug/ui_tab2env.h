@@ -52,13 +52,16 @@ public:
         horizontalLayout->setObjectName("horizontalLayout");
         pDateTimeFrom = new QDateTimeEdit(Tab2Env);
         pDateTimeFrom->setObjectName("pDateTimeFrom");
+        pDateTimeFrom->setDateTime(QDateTime(QDate(2025, 12, 1), QTime(0, 0, 0)));
         pDateTimeFrom->setMinimumDate(QDate(2025, 12, 1));
+        pDateTimeFrom->setDisplayFormat(QString::fromUtf8("yyyy-MM-dd hh:mm"));
 
         horizontalLayout->addWidget(pDateTimeFrom);
 
         pDateTimeTo = new QDateTimeEdit(Tab2Env);
         pDateTimeTo->setObjectName("pDateTimeTo");
         pDateTimeTo->setMinimumDate(QDate(2025, 12, 1));
+        pDateTimeTo->setDisplayFormat(QString::fromUtf8("yyyy-MM-dd hh:mm"));
 
         horizontalLayout->addWidget(pDateTimeTo);
 

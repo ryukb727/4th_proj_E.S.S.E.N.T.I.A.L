@@ -13,6 +13,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -20,7 +21,7 @@ QT_BEGIN_NAMESPACE
 class Ui_ESSMapWidget
 {
 public:
-    QWidget *gridLayoutWidget;
+    QVBoxLayout *verticalLayout;
     QGridLayout *gridLayout;
     QLabel *pLabelMap;
 
@@ -29,13 +30,11 @@ public:
         if (ESSMapWidget->objectName().isEmpty())
             ESSMapWidget->setObjectName("ESSMapWidget");
         ESSMapWidget->resize(400, 300);
-        gridLayoutWidget = new QWidget(ESSMapWidget);
-        gridLayoutWidget->setObjectName("gridLayoutWidget");
-        gridLayoutWidget->setGeometry(QRect(130, 100, 160, 80));
-        gridLayout = new QGridLayout(gridLayoutWidget);
+        verticalLayout = new QVBoxLayout(ESSMapWidget);
+        verticalLayout->setObjectName("verticalLayout");
+        gridLayout = new QGridLayout();
         gridLayout->setObjectName("gridLayout");
-        gridLayout->setContentsMargins(0, 0, 0, 0);
-        pLabelMap = new QLabel(gridLayoutWidget);
+        pLabelMap = new QLabel(ESSMapWidget);
         pLabelMap->setObjectName("pLabelMap");
         QSizePolicy sizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
         sizePolicy.setHorizontalStretch(0);
@@ -46,6 +45,9 @@ public:
         pLabelMap->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
         gridLayout->addWidget(pLabelMap, 0, 0, 1, 1);
+
+
+        verticalLayout->addLayout(gridLayout);
 
 
         retranslateUi(ESSMapWidget);

@@ -9,6 +9,10 @@
 #include <QTimer>
 #include <QSet>
 
+#define MAP_COLOR_NORMAL   "background-color: rgba(0,255,0,50);"
+#define MAP_COLOR_WARNING  "background-color: rgba(255,215,0,170);"
+#define MAP_COLOR_CRITICAL "background-color: rgba(255,0,0,190);"
+
 namespace Ui {
 class ESSMapWidget;
 }
@@ -40,6 +44,9 @@ private:
 
     void setupOverlay();
     void updateMapSize();
+
+private slots:
+    void onBlinkTimeout();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

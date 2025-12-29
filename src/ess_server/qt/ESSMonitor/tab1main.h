@@ -23,19 +23,16 @@ private:
     ESSMapWidget *pMapWidget;
     BatteryRackWidget *pRackWidget;
 
-    // === ESS Map 상태 기억 ===
-    QDateTime lastGasAlertTime;
-    int lastGasZone = -1;
+    QMap<int, QDateTime> zoneAlertTimes;                   // ESS 맵 구역별 알림 시간
+    QMap<int, QString> zoneAlertLevels;                   // 구역별 warning/critical 상태 저장
 
-    // === Battery Rack 상태 기억 ===
-    QDateTime lastThermalAlertTime;
-    int lastRackIndex = -1;
-    int lastLevelIndex = -1;
+    QMap<QPair<int,int>, QDateTime> rackAlertTimes;       // 배터리 랙 구역별 알림 시간
+    QMap<QPair<int,int>, QString> rackAlertLevels;        // 랙별 warning/critical 상태 저장
 
 private slots:
     void updateTime();
     void updateEnvironment();
-    void updateAlert();
+    // void updateAlert();          // 기능을 각각 updateESSMap()과 updateBatteryRack()에 나눠서 통합
     void updateESSMap();
     void updateBatteryRack();
 };

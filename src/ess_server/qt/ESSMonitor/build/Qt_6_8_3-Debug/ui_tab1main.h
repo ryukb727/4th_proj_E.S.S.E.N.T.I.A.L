@@ -134,7 +134,7 @@ public:
         verticalLayout_7->setObjectName("verticalLayout_7");
         label = new QLabel(Tab1Main);
         label->setObjectName("label");
-        label->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        label->setAlignment(Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignHCenter);
 
         verticalLayout_7->addWidget(label);
 
@@ -157,7 +157,7 @@ public:
         horizontalLayout_3->setObjectName("horizontalLayout_3");
         pLabelTemp = new QLabel(Tab1Main);
         pLabelTemp->setObjectName("pLabelTemp");
-        pLabelTemp->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        pLabelTemp->setAlignment(Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop);
 
         horizontalLayout_3->addWidget(pLabelTemp);
 
@@ -184,7 +184,7 @@ public:
         horizontalLayout_6->setObjectName("horizontalLayout_6");
         pLabelHumi = new QLabel(Tab1Main);
         pLabelHumi->setObjectName("pLabelHumi");
-        pLabelHumi->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        pLabelHumi->setAlignment(Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop);
 
         horizontalLayout_6->addWidget(pLabelHumi);
 
@@ -206,7 +206,7 @@ public:
         verticalLayout_10->setObjectName("verticalLayout_10");
         label_3 = new QLabel(Tab1Main);
         label_3->setObjectName("label_3");
-        label_3->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        label_3->setAlignment(Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignHCenter);
 
         verticalLayout_10->addWidget(label_3);
 
@@ -230,7 +230,7 @@ public:
         horizontalLayout_9->setObjectName("horizontalLayout_9");
         pLabelGas = new QLabel(Tab1Main);
         pLabelGas->setObjectName("pLabelGas");
-        pLabelGas->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        pLabelGas->setAlignment(Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop);
 
         horizontalLayout_9->addWidget(pLabelGas);
 
@@ -257,7 +257,7 @@ public:
         horizontalLayout_8->setObjectName("horizontalLayout_8");
         pLabelThermal = new QLabel(Tab1Main);
         pLabelThermal->setObjectName("pLabelThermal");
-        pLabelThermal->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        pLabelThermal->setAlignment(Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop);
 
         horizontalLayout_8->addWidget(pLabelThermal);
 

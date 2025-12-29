@@ -12,6 +12,9 @@
 #include <QValueAxis>
 #include <QTableWidgetItem>
 #include <QDebug>
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+QT_CHARTS_USE_NAMESPACE
+#endif
 
 namespace Ui {
 class Tab2Env;
@@ -48,6 +51,9 @@ private:
 
     void updateLastDateTime(bool);
     void updateLastDateTimeSql(bool);
+
+    bool openDatabase();
+    void loadEnvironmentData();
 };
 
 #endif // TAB2ENV_H

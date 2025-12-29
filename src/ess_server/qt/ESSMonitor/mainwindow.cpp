@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pTab3->setLayout(pTab3Alert->layout());
     pTab4Access = new Tab4Access(ui->pTab4);
     ui->pTab4->setLayout(pTab4Access->layout());
+
+    ui->pTabWidget->setCurrentIndex(1);
 }
 
 MainWindow::~MainWindow()
