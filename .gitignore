@@ -11,3 +11,47 @@ build/
 install/
 log/
 .cache/
+
+# =========================
+# STM32CubeIDE / Eclipse
+# =========================
+.metadata/
+.settings/
+.project
+.cproject
+*.launch
+
+# =========================
+# Build outputs
+# =========================
+Debug/
+Release/
+*/Debug/
+*/Release/
+build/
+out/
+*.o
+*.a
+*.d
+*.elf
+*.map
+*.lst
+*.su
+*.hex
+*.bin
+
+# =========================
+# Generated / temp files
+# =========================
+*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+
+# =========================
+# CubeMX generated backups
+# =========================
+*.ioc~
+*.mxproject
