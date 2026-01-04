@@ -1,5 +1,0 @@
-bool include_frame   
----
-bool ok
-string message
-ess_interfaces/ThermalFrame frame
