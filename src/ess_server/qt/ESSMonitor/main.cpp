@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     db.setDatabaseName("ess_db");
     db.setUserName("ess");
     db.setPassword("ess1234");
-    db.open();
+    // db.open();
 
     if (!db.open())
     {
