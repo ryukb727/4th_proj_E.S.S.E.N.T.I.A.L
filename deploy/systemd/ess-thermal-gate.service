@@ -14,12 +14,11 @@ Environment=RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 
 Environment=ESS_MQTT_HOST=10.10.14.109
 Environment=ESS_MQTT_PORT=1883
+Environment=ESS_MQTT_CLIENT_ID=thermal_gate_control_robot_1
 Environment=ESS_MQTT_TOPIC_THERM=ess/thermal/alert
 Environment=ESS_MQTT_TOPIC_ALERT=ess/alert
 Environment=ESS_LOCATION=robot_1
-
-Environment=THERM_WARN_C=35
-Environment=THERM_CRIT_C=50
+Environment=THERM_ALERT_COOLDOWN_SEC=0
 
 Environment=HOME=/root
 Environment=ROS_LOG_DIR=/var/log/ros
