@@ -39,7 +39,7 @@ using namespace std::chrono_literals;
 #define M_PI 3.14159265358979323846
 #endif
 
-#define START_TH M_PI/180.0 * 3.0  // 15도
+#define START_TH M_PI/180.0 * 15.0  // 15도
 
 typedef struct point_t{
     double x;
@@ -54,28 +54,12 @@ typedef struct point_t{
 
 //  변환 해줘야함 ㄷㄷ
 struct point_t points[] = {
-    {0.51, 0.24},   
-    {1.04, 0.19}, 
-    {1.58, 0.18}  
+    {0.48, 0.2},   
+    {1.03, 0.185}, 
+    {1.56, 0.17}  
 };
-
-
-struct point_t zonePoints[] = {
-    {0.6, 0.5},   // Index 0 -> Zone 1
-    {1.4, 0.5},   // Index 1 -> Zone 2
-    {2.3, 0.5},   // Index 2 -> Zone 3
-    {0.6, -0.3},  // Index 3 -> Zone 4
-    {1.4, -0.3},  // Index 4 -> Zone 5
-    {2.3, -0.3}   // Index 5 -> Zone 6
-};
-
-
-
-
 
 #define PUBLISH_INTERVAL_RATIO 4  // 50ms 타이머 중 4번째마다 좌표 발행
-#define USE_ARUCO_ALIGNMENT    1// 아루코 정렬 사용 여부
-
 
 class ControlNode : public rclcpp::Node {
 public:
@@ -106,7 +90,6 @@ public:
         pub_capture = create_publisher<std_msgs::msg::Int32>("/ess/request/id", 10);
         pub_pose_mqtt_ = create_publisher<geometry_msgs::msg::Pose>("/ess/robot_pose", 10);
         pub_aruco_ = create_publisher<std_msgs::msg::Int32>("/ess/aruco/request", 10);
-        pub_zone_status_ = create_publisher<std_msgs::msg::Int32>("/ess/zone_status", 10);
 
 
         // 50ms 마다 실행되는 tick 타이머에서 좌표를 계속 발행할거임
@@ -166,29 +149,16 @@ private:
         
         RCLCPP_INFO(get_logger(), "thermal_callback()");
     }
+
     void priority_zone_callback(const std_msgs::msg::Int32::SharedPtr msg) {
         int zone = msg->data;
-        int input_col = (zone - 1) % 3; // Zone 1,4 -> 0 / Zone 2,5 -> 1 / Zone 3,6 -> 2
-
-
-        if(!aruco_done_)
-        {
-            aruco_done_ = true; // 강제 성공 플래그 세팅
-    
-            stop_cmd_vel();
-    
-            std_msgs::msg::Int32 msg;
-            msg.data = 0;
-            pub_aruco_->publish(msg);
-            RCLCPP_WARN(get_logger(), "Aruco Interrupted by Emergency!");
-        }
-
+        int input_col = (zone - 1) % 3;
 
         if (zone >= 1 && zone <= 6) {
-            // [중복 방지 1] 이미 비상 모드이고, 목표 구역이 같으면 무시
+            // [중복 방지 1] "비상 모드"이고 현재 구역이면 무시
             if (is_emergency_active_ && current_col_ == input_col) return;
             
-            // [중복 방지 2] 큐에 이미 같은 구역이 대기 중이면 무시
+            // [중복 방지 2] 큐에 이미 있으면 무시
             for (int q_col : emergency_queue_) {
                 if (q_col == input_col) return;
             }
@@ -198,35 +168,26 @@ private:
             RCLCPP_WARN(get_logger(), "!!! Emergency Added to Queue: Zone %d (Queue Size: %ld) !!!", 
                         zone, emergency_queue_.size());
 
-            // =================================================================================
-            // [핵심 수정] 패트롤 중이든 뭐든, 비상 모드가 아니라면 "즉시 중단하고 출동"
-            // =================================================================================
+            // 2. 실행 여부 판단
             if (!is_emergency_active_) {
-                
-                // 1) 현재 하고 있는 패트롤 위치 저장 (나중에 돌아오기 위함, 선택사항)
-                if (saved_patrol_col_ == -1) {
-                    saved_patrol_col_ = current_col_;
+                // 멈추고 1층부터 다시 하는 게 아니라, 그냥 "비상 모드" 깃발만 들고 하던 거 계속 하게 함
+                if (current_col_ == input_col) {
+                    RCLCPP_INFO(get_logger(), "Already in Zone %d. Promoting Patrol to Emergency Mode.", zone);
+                    is_emergency_active_ = true; // 깃발만 올림 (리셋 X)
+                    
+                    // 큐에 넣었던 건 "현재 수행 중"이 되므로 다시 뺌
+                    if (!emergency_queue_.empty() && emergency_queue_.back() == input_col) {
+                        emergency_queue_.pop_back();
+                    }
+                } 
+                //  하던 거 멈추고 비상 처리 시작
+                else {
+                    stop_cmd_vel(); 
+                    nav_client_->async_cancel_all_goals(); 
+                    start_next_emergency_task(); 
                 }
-
-                RCLCPP_WARN(get_logger(), "!!! INTERRUPTING PATROL -> SWITCHING TO EMERGENCY !!!");
-
-                // 2) 현재 이동 중인 네비게이션 강제 취소
-                nav_client_->async_cancel_all_goals();
-                stop_cmd_vel(); // 로봇 정지 명령
-                
-                // 3) 이동 완료 플래그 강제 리셋 (기존 이동이 끝난 것처럼 처리하거나, 무시하게)
-                nav_done_ = false; 
-                nav_ok_ = false;
-
-                // 4) 비상 모드 플래그 활성화
-                is_emergency_active_ = true;
-
-                // 5) 즉시 비상 태스크 시작 함수 호출
-                start_next_emergency_task();
             }
-            // 이미 비상 모드(is_emergency_active_ == true)라면 큐에 쌓였으니, 
-            // 현재 비상 작업 끝난 후 다음 비상 작업으로 이어짐.
-
+            
         } else {
             RCLCPP_WARN(get_logger(), "Received invalid priority zone: %d", zone);
         }
@@ -237,10 +198,12 @@ private:
         RCLCPP_INFO(get_logger(), "Aruco ACK received: %d", aruco_id);
         aruco_done_ = true;
     }
-void start_next_emergency_task() {
+
+
+    void start_next_emergency_task() {
     
         if (emergency_queue_.empty()) {
-            is_emergency_active_ = false; 
+            is_emergency_active_ = false; // 대기열 빔 -> 작업 끝
             return;
         }
 
@@ -250,30 +213,31 @@ void start_next_emergency_task() {
 
         // 2. 변수 세팅
         current_col_ = next_col;
-        target_floor_bit_ = TOFLOOR1; // 비상시는 무조건 1층 탐색부터
-        
-        thermal_done_ = true;   // 기존 작업 플래그 리셋
+        target_floor_bit_ = TOFLOOR1;
+        thermal_done_ = true;
         home_requested_ = false;
-        emergency_goal_sent_ = false;
+        emergency_goal_sent_ = false; // 중요: 이동 명령 다시 보내기 위해 리셋
         nav_done_ = false;
-        
-        is_emergency_active_ = true; 
+        is_emergency_active_ = true;  // "나 작업중" 깃발
 
         RCLCPP_WARN(get_logger(), ">>> Starting Emergency Task for Zone %d <<<", current_col_ + 1);
 
+        // 3. 리프트 내리기
         if (!lift_inflight_) {
             lift_inflight_ = true;
             std::thread(&ControlNode::move_to_floor_blocking, this, TOFLOOR1 | GODOWN).detach();
-        } 
+        }
 
-        // 4. 상태 전환 -> 바로 비상 모드로!
+        // 4. 상태 전환
         state_ = State::EMERGENCY;
     }
+
 
 
     // --- 상태 머신 (FSM) ---
     void tick() {
         // 매 tick 루프중 4번째마다 현재 좌표를 읽어서 MQTT 전송용 토픽으로 발행 해야징~
+        static int publish_count = 0;
 
 
         if(state_ != preState_) {
@@ -281,8 +245,10 @@ void start_next_emergency_task() {
             preState_ = state_;
         }
 
-        publish_current_pose();
-        
+        if (++publish_count >= PUBLISH_INTERVAL_RATIO) {
+            publish_current_pose();
+            publish_count = 0;
+        }
 
         // 아 함수화 마렵다 ㄹㅇ로다가
         switch (state_) {
@@ -307,18 +273,13 @@ void start_next_emergency_task() {
                     state_ = State::NAV_HOME;
                 }
 
-                if (!emergency_queue_.empty()) {
-                    RCLCPP_WARN(get_logger(), "Emergency detected during IDLE! Waking up immediately.");
-                    idle_counter_ = 0; // 카운터 초기화
-                    start_next_emergency_task(); // 비상 작업 시작 함수 호출
-                    break; // 스위치문 탈출
-                }
+                
 
                 break;
             case State::NAV_HOME:
                 if (home_requested_.exchange(false)) {
                     RCLCPP_INFO(get_logger(), "Sequence Start: Moving to Home(0,0)");
-                    send_nav_goal(0.1, 0.0, START_TH);
+                    send_nav_goal(0.0, 0.0, START_TH);
                     state_ = State::NAV_FIRST_POS;
                 }
                 break;
@@ -387,65 +348,55 @@ void start_next_emergency_task() {
                 break;
             }
 
-            case State::WAIT_THERMAL:
+          case State::WAIT_THERMAL:
             {
                 if (thermal_done_) {
-                    if (++thermal_wait_count_ < 2) break;
+                    if (++thermal_wait_count_ < 5) break;
                     thermal_wait_count_ = 0;
 
-                    // 3층까지 작업 완료 시 (한 구역 검사 끝)
+                    // 3층 작업 완료 시
                     if (target_floor_bit_ == TOFLOOR3) {
                         
-                        // [비상 상황 처리 로직]
+                        // 비상 상황 처리 로직
                         if (is_emergency_active_) {
                             RCLCPP_INFO(get_logger(), "Emergency Zone %d Processed.", current_col_ + 1);
                             
-                            // 1. 큐에 또 다른 비상이 남았으면 -> 그리로 바로 이동
                             if (!emergency_queue_.empty()) {
-                                start_next_emergency_task(); 
-                                break; // 상태 전환했으니 여기서 탈출
+                                // 큐에 남은 거 있으면 바로 다음 실행
+                                start_next_emergency_task();
+                            } else {
+                                // 큐 비었으면 종료 -> 집으로 복귀 imsi
+                                is_emergency_active_ = false;
+                                RCLCPP_INFO(get_logger(), "Queue Empty. Returning Home...");
+                                send_nav_goal(0.0, 0.0, START_TH);
+                                state_ = State::NAV_FINAL_APPROACH;
                             }
-                            // 2. 비상 상황 모두 종료 -> "여기서부터 계속 순찰 진행"
-                            else {
-                                RCLCPP_WARN(get_logger(), "Emergency Done. Continuing Patrol Sequence from here...");
-                                is_emergency_active_ = false; 
-                                saved_patrol_col_ = -1; 
-                                // break 없이 아래로 흘려보내서(Fall-through) 자연스럽게 다음 단계 진행
-                            }
+                            thermal_done_ = false;
+                            break; // switch 탈출
                         }
                         
-                        // 현재 구역이 마지막 구역(Index 2, Zone 3)이었으면
-                        // -> 바로 집(FINAL)이 아니라, 지정된 경유지(SECOND_POS)로 이동!
+
                         if (current_col_ >= 2) {
-                            RCLCPP_INFO(get_logger(), "All Zones complete. Moving to Waypoint 2.");
-                            
-                            // [수정 포인트] 집(0,0)으로 바로 안 가고, Waypoint(2.0, 1.2)로 먼저 감
+                            RCLCPP_INFO(get_logger(), "All Zones complete.");
                             send_nav_goal(2.0, 1.2, M_PI);
-                            
-                            // 리프트 내리면서 이동
                             lift_inflight_ = true;
                             std::thread(&ControlNode::move_to_floor_blocking, this, TOFLOOR1 | GODOWN).detach();
-                            
-                            // 상태를 NAV_SECOND_POS로 변경 (그래야 이후 BACK_HOME -> FINAL 순서로 감)
                             state_ = State::NAV_SECOND_POS;
-                        } 
-                        // 아직 다음 구역이 남았으면 (Zone 1 or 2) -> 다음 구역으로
-                        else {
-                            current_col_++; 
+                        } else {
+                            
+                            current_col_++;
                             target_floor_bit_ = TOFLOOR1; 
                             
-                            // 이동하면서 리프트 내리기
                             lift_inflight_ = true;
                             std::thread(&ControlNode::move_to_floor_blocking, this, TOFLOOR1 | GODOWN).detach();
                             
-                            RCLCPP_INFO(get_logger(), "Moving to Next Zone %d", current_col_ + 1);
+                            RCLCPP_INFO(get_logger(), "Moving to Next Zone");
                             send_nav_goal(points[current_col_].x, points[current_col_].y, M_PI/2.0 + START_TH);
                             
                             state_ = State::DRIVE_STRAIGHT;
                         }
-
                     } else {
-                        // (층 이동 로직) 1층 -> 2층, 2층 -> 3층
+                        // 다음 층으로 상승 (1, 2층일 때)
                         target_floor_bit_ <<= 1;
                         state_ = State::START_LIFT;
                     }
@@ -456,38 +407,29 @@ void start_next_emergency_task() {
             case State::NAV_BACK_HOME:
                 if (nav_done_) {
                     RCLCPP_INFO(get_logger(), "All Sequence Complete.");
-                    send_nav_goal(0.1, 0.0, START_TH);
+                    send_nav_goal(0.0, 0.0, START_TH);
                     state_ = State::NAV_FINAL_APPROACH;
                 }
                 break;
 
             case State::NAV_FINAL_APPROACH:
                 if (nav_done_) {
-                    // 홈 도착 주행 실패 시 정지
+                    // [안전장치] 홈 도착 주행 실패 시 정지
                     if (!nav_ok_) { fail_and_stop("Final Docking Failed"); return; }
                     
                     RCLCPP_INFO(get_logger(), "Arrived Home. Requesting Aruco Alignment...");
 
-#if USE_ARUCO_ALIGNMENT
-
-                    aruco_done_ = false;
-
-                    stop_cmd_vel();
                     // 1. Aruco 정렬 요청 발행 (Topic: /ess/aruco/request, Data: 1)
                     std_msgs::msg::Int32 msg;
                     msg.data = 1;
                     pub_aruco_->publish(msg);
 
                     // 2. Aruco 대기 상태로 전환 변수 설정
+                    aruco_done_ = false;
                     aruco_wait_count_ = 0;
                     
-                    // 3. WAIT_ARUCO 상태로 전환 
+                    // 3. 바로 IDLE로 가지 않고 WAIT_ARUCO 상태로 이동
                     state_ = State::WAIT_ARUCO;
-#else
-                    finish_patrol_and_idle(); // 아루코 사용 안하면 바로 IDLE로
-#endif
-
-
                 }
                 break;
 
@@ -497,7 +439,7 @@ void start_next_emergency_task() {
                 if (!emergency_goal_sent_) {
                     RCLCPP_INFO(get_logger(), "Emergency: Sending Nav Zone_%d",current_col_ % 3 + 1);
                     
-                    send_nav_goal(points[current_col_].x, points[current_col_].y, START_TH + M_PI / 2.0);
+                    send_nav_goal(points[current_col_].x, points[current_col_].y, M_PI / 2.0);
                     
                     emergency_goal_sent_ = true;
                     nav_done_ = false;
@@ -518,23 +460,13 @@ void start_next_emergency_task() {
                 // [성공 조건] 콜백 받음
                 if (aruco_done_) {
                     RCLCPP_INFO(get_logger(), "Aruco Alignment Success. Patrol Complete.");
-                    finish_patrol_and_idle(); // 초기화 및 IDLE 이동 함수 호출 
+                    finish_patrol_and_idle(); // 초기화 및 IDLE 이동 함수 호출 (아래 설명)
                 }
                 // [타임아웃 조건] 10초 경과
                 // 50ms * 200 = 10000ms = 10초
                 else if (++aruco_wait_count_ >= 200) {
-
-                    aruco_done_ = true; // 강제 성공 플래그 세팅
-
-                    stop_cmd_vel();
-
-                    std_msgs::msg::Int32 msg;
-                    msg.data = 0;
-                    pub_aruco_->publish(msg);
-
                     RCLCPP_WARN(get_logger(), "Aruco Timeout (10s)! Forcing IDLE state.");
                     finish_patrol_and_idle(); // 실패해도 IDLE로 이동
-
                 }
             break;
         }
@@ -548,29 +480,7 @@ void start_next_emergency_task() {
             pose_msg.position.x = x;
             pose_msg.position.y = y;
             // 필요하다면 orientation(방향) 정보도 추가 가능
-            //pub_pose_mqtt_->publish(pose_msg);
-
-            if (x < zonePoints[0].x  &&  y > zonePoints[0].y ) {
-                zone_Num = 1; // Index 0 -> Zone 1, Index 3 -> Zone 4
-            }
-            else if (x < zonePoints[1].x && x >= zonePoints[0].x && y > zonePoints[1].y) {
-                zone_Num = 2; // Index 1 -> Zone 2, Index 4 -> Zone 5
-            }
-            else if (x < zonePoints[2].x && x >= zonePoints[1].x && y > zonePoints[2].y) {
-                zone_Num = 3; // Index 2 -> Zone 3, Index 5 -> Zone 6
-            }
-            else if (x < zonePoints[0].x && y <= zonePoints[0].y) {
-                zone_Num = 4; // Index 3 -> Zone 4
-            }
-            else if (x < zonePoints[1].x && x >= zonePoints[0].x && y <= zonePoints[1].y) {
-                zone_Num = 5; // Index 4 -> Zone 5
-            }
-            else if (x < zonePoints[2].x && x >= zonePoints[1].x && y <= zonePoints[2].y) {
-                zone_Num = 6; // Index 5 -> Zone 6
-            }
-            std_msgs::msg::Int32 zone_msg;
-                zone_msg.data = zone_Num;
-            pub_zone_status_->publish(zone_msg); 
+            pub_pose_mqtt_->publish(pose_msg);
         }
     }
 
@@ -623,7 +533,7 @@ void start_next_emergency_task() {
         
         // 3. 타임아웃 설정을 위한 시작 시간 기록
         auto start_time = std::chrono::steady_clock::now();
-        const double TIMEOUT_SEC = 10.0; // 7초 이상 작동하면 문제 있는 것으로 간주
+        const double TIMEOUT_SEC = 5.0; // 4초 이상 작동하면 문제 있는 것으로 간주
 
        while (rclcpp::ok()) {
             // poll 로직 (기존과 동일)
@@ -737,12 +647,9 @@ void start_next_emergency_task() {
     //     }
     // }
     
-    // 남한테 던질떄 사용하는 함수
+    // --- 보조 함수 ---
     void stop_cmd_vel() { pub_cmd_vel_->publish(geometry_msgs::msg::Twist()); }
     void send_capture_cmd(int id) { std_msgs::msg::Int32 m; m.data = id; pub_capture->publish(m); }
-    
-    
-    // 
     void fail_and_stop(std::string m) { RCLCPP_ERROR(get_logger(), "%s", m.c_str()); state_ = State::IDLE; }
     void cleanup_gpio() { apply_motor_state(STOP); for(auto* l : sensor_lines_) gpiod_line_release(l); gpiod_chip_close(chip_); }
 
@@ -759,7 +666,6 @@ void start_next_emergency_task() {
     rclcpp_action::Client<NavigateToPose>::SharedPtr nav_client_;
     rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr pub_pose_mqtt_;
     rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr pub_aruco_;
-    rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr pub_zone_status_;
 
     tf2_ros::Buffer tf_buffer_;
     tf2_ros::TransformListener tf_listener_;
@@ -785,9 +691,7 @@ void start_next_emergency_task() {
     std::atomic<bool> aruco_done_{false}; // 아루코 완료 플래그
     int aruco_wait_count_ = 0;            // 타임아웃 카운터
 
-    int saved_patrol_col_ = -1; // emergency 직전 상태로 돌아가기 위한
 
-    int zone_Num = 0;
 
 
 };

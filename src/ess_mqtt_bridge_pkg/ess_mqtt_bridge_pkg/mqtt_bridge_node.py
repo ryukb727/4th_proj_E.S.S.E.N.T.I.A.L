@@ -1,111 +1,143 @@
+#!/usr/bin/env python3
 import json
 import time
-import threading
-
+import ast
 import rclpy
 from rclpy.node import Node
-
 from paho.mqtt import client as mqtt
-
-# 예: 너가 만든 인터페이스를 쓴다고 가정
-from ess_interfaces.msg import ThermalEvent  # 예시
-from std_msgs.msg import Float32            # center를 std_msgs로 쓰는 경우 예시
-
+from std_msgs.msg import Int32
 
 class MqttBridgeNode(Node):
     def __init__(self):
-        super().__init__('ess_mqtt_bridge')
-
-        # --- ROS 파라미터로 MQTT 설정 받기 ---
+        super().__init__('mqtt_bridge_node')
+        
+        # 1. 브로커 설정
         self.declare_parameter('broker_host', '10.10.14.109')
-        self.declare_parameter('broker_port', 1883)
-        self.declare_parameter('base_topic', 'ess')
-        self.declare_parameter('qos', 0)
-        self.declare_parameter('retain', False)
-        self.declare_parameter('client_id', 'ess-bridge')
-        self.declare_parameter('username', '')
-        self.declare_parameter('password', '')
-
         self.host = self.get_parameter('broker_host').value
-        self.port = int(self.get_parameter('broker_port').value)
-        self.base = self.get_parameter('base_topic').value.rstrip('/')
-        self.qos = int(self.get_parameter('qos').value)
-        self.retain = bool(self.get_parameter('retain').value)
-        self.client_id = self.get_parameter('client_id').value
-        self.username = self.get_parameter('username').value
-        self.password = self.get_parameter('password').value
+        
+        # 2. 토픽 설정 (두 곳 다 구독해야 함)
+        self.topic_cmd_sub = 'ess/alert/robot' 
+        self.topic_alert_sub = 'ess/alert'     
+        self.topic_pub = 'ess/alert'  # 서버로 보낼 때 사용
 
-        # --- MQTT 클라이언트 ---
-        self.mqtt = mqtt.Client(client_id=self.client_id, clean_session=True)
-        if self.username:
-            self.mqtt.username_pw_set(self.username, self.password)
+        self.current_zone_num = 0 
 
-        self.mqtt.on_connect = self._on_connect
-        self.mqtt.on_disconnect = self._on_disconnect
-
-        # 네트워크 loop는 별도 스레드로
-        self._mqtt_thread = threading.Thread(target=self._mqtt_loop, daemon=True)
-        self._mqtt_thread.start()
-
-        # --- ROS 구독 설정 ---
-        # center를 따로 토픽으로 쓰는 경우
-        self.sub_center = self.create_subscription(
-            Float32, '/thermal/center', self.on_center, 10
+        # 3. ROS 2 통신 설정
+        # [출동용] 이 토픽으로 int(구역번호)를 쏘면 ControlNode가 움직입니다.
+        self.emergency_pub = self.create_publisher(Int32, '/ess/priority_zone', 10)
+        
+        # [내 위치 수신용] 로봇의 현재 구역 정보를 받습니다.
+        self.zone_sub = self.create_subscription(
+            Int32,
+            '/ess/zone_status',
+            self._on_robot_zone_update,
+            10
         )
 
-        # 이벤트 메시지(이상/최대/최소 등)
-        self.sub_event = self.create_subscription(
-            ThermalEvent, '/thermal/event', self.on_event, 10
-        )
-
-        self.get_logger().info('MQTT bridge node started.')
-
-    def _mqtt_loop(self):
-        # 재연결 루프
-        while rclpy.ok():
-            try:
-                self.mqtt.connect(self.host, self.port, keepalive=30)
-                self.mqtt.loop_forever(retry_first_connection=True)
-            except Exception as e:
-                # 연결 실패하면 잠깐 쉬고 재시도
-                time.sleep(1.0)
+        # 4. MQTT Client 설정
+        self.mqtt_client = mqtt.Client()
+        self.mqtt_client.on_connect = self._on_connect
+        self.mqtt_client.on_message = self._on_message
+        
+        try:
+            self.mqtt_client.connect(self.host, 1883)
+            self.mqtt_client.loop_start()
+            self.get_logger().info(f'MqttBridgeNode Started. Host: {self.host}')
+        except Exception as e:
+            self.get_logger().error(f'Failed to connect to MQTT Broker: {e}')
 
     def _on_connect(self, client, userdata, flags, rc):
-        self.get_logger().info(f'MQTT connected rc={rc}')
+        if rc == 0:
+            self.get_logger().info('Connected to MQTT Broker successfully')
+            # [수정] 두 개의 토픽 모두 구독 (리스트 형태)
+            topic_list = [(self.topic_cmd_sub, 0), (self.topic_alert_sub, 0)]
+            client.subscribe(topic_list)
+            self.get_logger().info(f'Subscribed to: {self.topic_cmd_sub} AND {self.topic_alert_sub}')
+        else:
+            self.get_logger().error(f'Connection failed with code {rc}')
 
-    def _on_disconnect(self, client, userdata, rc):
-        self.get_logger().warn(f'MQTT disconnected rc={rc}')
+    def _on_robot_zone_update(self, msg):
+        self.current_zone_num = msg.data
 
-    def _pub_json(self, topic_suffix: str, payload: dict):
-        topic = f'{self.base}/{topic_suffix}'.replace('//', '/')
-        data = json.dumps(payload, ensure_ascii=False)
-        self.mqtt.publish(topic, data, qos=self.qos, retain=self.retain)
+    def _on_message(self, client, userdata, msg):
+        try:
+            payload_str = msg.payload.decode('utf-8')
+            
+            # 1. 데이터 파싱
+            try:
+                data = json.loads(payload_str)
+            except json.JSONDecodeError:
+                try:
+                    data = ast.literal_eval(payload_str)
+                except:
+                    self.get_logger().error(f'Cannot parse payload: {payload_str}')
+                    return
 
-    def on_center(self, msg: Float32):
-        self._pub_json('thermal/center', {
-            'center': float(msg.data),
-            'ts': time.time(),
-        })
+            # 2. 데이터 전처리 (소문자 변환, 공백 제거)
+            location_raw = str(data.get("location", "")).strip().lower()
+            message_raw = str(data.get("message", "")).strip().lower()
+            event_type = str(data.get("event_type", "")).strip().lower()
 
-    def on_event(self, msg: ThermalEvent):
-        self._pub_json('thermal/event', {
-            'abnormal': bool(msg.abnormal),
-            'center': float(msg.center),
-            'min': float(msg.min),
-            'max': float(msg.max),
-            'hot_x': int(msg.hot_x),
-            'hot_y': int(msg.hot_y),
-            'stamp': {
-                'sec': int(msg.stamp.sec),
-                'nanosec': int(msg.stamp.nanosec),
-            }
-        })
+            # ==================================================================
+            # [Logic 1] 내가 가스 감지 -> 서버로 전송
+            # 조건: location == "robot_1" AND event_type == "gas"
+            # ==================================================================
+            if location_raw == "robot_1" and event_type == "gas":
+                
+                response_payload = data.copy()
+                # 내 위치를 실어서 보냄
+                response_payload["location"] = f"zone_{self.current_zone_num}"
+                # 내가 처리했다는 표시 (message에 robot_1 넣기)
+                response_payload["message"] = "robot_1"
 
+                try:
+                    json_str = json.dumps(response_payload)
+                    self.mqtt_client.publish(self.topic_pub, json_str)
+                    self.get_logger().info(f'>> [GAS DETECTED] Forwarding to Server: {json_str}')
+                except Exception as e:
+                    self.get_logger().error(f'Failed to publish response: {e}')
+
+            # ==================================================================
+            # [Logic 2] 가스 발생 알림 수신 -> 로봇 출동
+            # 조건: event_type == "gas" AND location에 "zone" 포함 AND message에 "robot" 없음
+            # ==================================================================
+            elif event_type == "gas" and "zone" in location_raw and "robot" not in message_raw:
+                
+                try:
+                    # location 문자열(예: "zone_3")에서 숫자만 추출
+                    target_zone = int(location_raw.split('_')[-1])
+                    
+                    # ROS 2 토픽 발행 (ControlNode가 이걸 듣고 움직임)
+                    ros_msg = Int32()
+                    ros_msg.data = target_zone
+                    self.emergency_pub.publish(ros_msg)
+                    
+                    self.get_logger().warn(f'>>> [EMERGENCY CALL] Gas at {location_raw}! Moving Robot to Zone {target_zone}')
+                    
+                except ValueError:
+                    self.get_logger().error(f'Failed to parse zone number from: {location_raw}')
+                except Exception as e:
+                    self.get_logger().error(f'Error executing emergency logic: {e}')
+
+            # (옵션) 내가 보낸 메시지가 되돌아온 경우 (Loop-back)
+            elif "robot" in message_raw:
+                # 이건 내가 보낸거니까 그냥 무시
+                pass
+
+        except Exception as e:
+            self.get_logger().error(f'Critical Error inside _on_message: {e}')
 
 def main():
     rclpy.init()
     node = MqttBridgeNode()
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        node.mqtt_client.loop_stop()
+        node.destroy_node()
+        rclpy.shutdown()
 
+if __name__ == '__main__':
+    main()
