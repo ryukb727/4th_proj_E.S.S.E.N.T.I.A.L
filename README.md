@@ -8,16 +8,23 @@
 
 ---
 
-## Demo
-- Patrol Robot + ArUco Homing  
-  ![demo-robot](docs/assets/demo/demo-robot.gif)
 
-- Integrated Control Tower (Qt)  
-  ![demo-ui](docs/assets/demo/demo-ui.gif)
+### Full Demo (All-in-one)
+[![full-demo](docs/assets/demo/full-demo-thumb.png)](docs/assets/vedio/full_demo.mp4)
 
-> (원본 시연 영상은 링크로 첨부)  
-> - Demo video: (YouTube/Drive/GitHub Release 링크)
+---
 
+### Video Clips (click to open)
+- ArUco Auto-Docking  
+  [![aruco](docs/assets/demo/aruco-thumb.png)](docs/assets/video/aruco.mp4)
+
+- Emergency / Critical / Warning / Ventilation / RFID  
+  - [Emergency](docs/assets/video/emergency.mp4)
+  - [Critical](docs/assets/video/critical.mp4)
+  - [Warning](docs/assets/video/warning.mp4)
+  - [Ventilation](docs/assets/video/ventilation.mp4)
+  - [RFID](docs/assets/video/rfid.mp4)
+  - 
 ---
 
 ## Background
@@ -49,6 +56,10 @@
 
 ---
 
+### ROS Nodes / Graph
+![ros-nodes-1](docs/assets/diagrams/ros-nodes-1.png)
+![ros-nodes-2](docs/assets/diagrams/ros-nodes-2.png)
+
 ## Key Features
 ### 1) Access Authentication & Alarm
 - RFID 기반 관리자 인증
@@ -57,6 +68,7 @@
 ### 2) Environmental Monitoring & HVAC Control
 - 온/습도 수집 및 임계 조건 기반 공조 제어
 - 데이터는 DB 적재 + UI 조회/그래프 제공
+
 
 ### 3) Thermal Safety (Infrared)
 - 열화상 ROI 기반 이상 픽셀 감지
@@ -139,7 +151,15 @@ ROS NAV2 이슈: TF/파라미터 튜닝으로 주행 안정화
 
 UI Update 이슈: 알림 해제 후 상태 전이 로직 보강 필요
 
-(자세한 내용: docs/TROUBLESHOOTING.md)
+<details>
+<summary><b>Troubleshooting Screenshots</b></summary>
+
+![hw-trouble](docs/assets/troubleshooting/hw-troubleshooting.png)
+![ros-trouble-1](docs/assets/troubleshooting/ros-troubleshooting-1.png)
+![ros-trouble-2](docs/assets/troubleshooting/ros-troubleshooting-2.png)
+![ui-trouble](docs/assets/troubleshooting/ui-troubleshooting.png)
+
+</details>
 
 ### Roadmap
 
