@@ -1,3 +1,61 @@
+| [Korean 🇰🇷](#korean) | [Japanese 🇯🇵](#japanese) | [Team](#Team) |
+| :---: | :---: | :---: |
+
+</div>
+
+---
+
+<div id="korean">
+
+### 🇰🇷 Korean Version
+
+# ⏱️ SI-TA-PO  
+## Linux Kernel Device Driver 기반 타이머 · 시계 · 뽀모도로 임베디드 시스템
+
+
+
+---
+
+<div align="center">
+<a href="#japanese">⬇️ 日本語バージョンへ移動 (Go to Japanese Version) ⬇️</a>
+</div>
+
+</div>
+
+---
+
+<div id="japanese">
+
+### 🇯🇵 Japanese Version
+
+# ⏱️ SI-TA-PO  
+## Linuxカーネルデバイスドライバベース：タイマー・時計・ポモドーロ組込みシステム
+
+
+
+---
+
+<div align="center">
+<a href="#korean">⬆️ 한국어 버전으로 돌아가기 (Go back to Korean Version) ⬆️</a>
+</div>
+
+</div>
+
+---
+---
+
+<div align="center">
+<a href="#Team">⬇️ Go to Team Version ⬇️</a>
+</div>
+
+</div>
+
+---
+
+<div id="Team">
+
+### ⏰ Team
+
 # E.S.S.E.N.T.I.A.L  
 **ESS Safety System with Environmental & Thermal Intelligent ALert**
 
@@ -245,3 +303,8 @@ Control Tower 기능 강화(필터/리포트/통계)
 - 관련 코드: `src/ess_server/`
 
 </details>
+---
+
+<div align="center">
+<a href="#korean">⬆️ 한국어 버전으로 돌아가기 (Go back to Korean Version) ⬆️</a>
+</div>
