@@ -237,7 +237,7 @@ STM32センサーモジュールとROS2ベースの巡回ロボットから収�
 
 ### 📍 Data Flow / Sequence
 <p align="center">
-  <img src="docs/assets/slides/sequence.png" width="900" alt="Data Flow & Sequence">
+  <img width="900" height="437" alt="Data_Flow_Sequence_日" src="https://github.com/user-attachments/assets/e4ab8714-f779-4fbe-ab03-adf2a4de20f5" />
 </p>
 
 ## 🤖 1-2. ROS2 Node Graph
