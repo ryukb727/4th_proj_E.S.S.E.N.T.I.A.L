@@ -210,7 +210,184 @@ STM32 센서 모듈과 ROS2 기반 순찰 로봇에서 수집된 데이터를 MQ
 ## ESS Safety System with Environmental Network & Thermal Intelligent ALert Logic
 データ駆動型ESS統合安全監視システム：ROS2ロボット巡回とセンサーネットワークによる異常の自動検知・分析・対応
 
+<a href="docs/assets/video/full_demo.gif">
+  <img src="docs/assets/video/full_demo.gif" width="900">
+</a>
 
+---
+
+## 💡 1. プロジェクト概要
+
+本プロジェクトは、ESS（エネルギー貯蔵装置）施設における火災、ガス漏れ、環境変化などの異常兆候を**リアルタイムで検知し対応**する統合安全監視システムです。
+
+STM32センサーモジュールとROS2ベースの巡回ロボットから収集されたデータをMQTTで統合し、MariaDBに記録。<strong>Qtベースの中央監視センター（Control Tower）</strong>でリアルタイム監視と遠隔制御を行えるように構築しました。
+
+特に、移動型ロボットと固定型センサーを組み合わせた**ハイブリッド監視アーキテクチャ**により、従来の固定型センサーのみでは発生していた死角の問題を解決しました。
+
+## 🧩 1-1. System Architecture
+### Hardware Architecture
+<p align="center">
+  <img src="docs/assets/slides/hw-arch.png" width="900" alt="Hardware Architecture">
+</p>
+
+### Software Architecture
+<p align="center">
+  <img src="docs/assets/slides/sw-arch.png" width="900" alt="Software Architecture">
+</p>
+
+### Data Flow / Sequence
+<p align="center">
+  <img src="docs/assets/slides/sequence.png" width="900" alt="Data Flow & Sequence">
+</p>
+
+## 🤖 1-2. ROS2 Node Graph
+
+<p align="center">
+  <img src="docs/assets/diagrams/ros-nodes-1.png" width="900" alt="ROS2 Node Graph">
+</p>
+
+---
+
+## 🛠️ 2. 技術スタック
+
+![C++](https://img.shields.io/badge/Language-C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)
+![Python](https://img.shields.io/badge/Language-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![SQL](https://img.shields.io/badge/Language-SQL-003545?style=for-the-badge&logo=mysql&logoColor=white)
+<br>
+![Qt](https://img.shields.io/badge/Framework-Qt6-41CD52?style=for-the-badge&logo=qt&logoColor=white)
+![MQTT](https://img.shields.io/badge/Protocol-MQTT-660066?style=for-the-badge)
+![JSON](https://img.shields.io/badge/Format-JSON-F2C94C?style=for-the-badge)
+![Wi-Fi](https://img.shields.io/badge/Protocol-ESP8266%20WiFi-FF6F61?style=for-the-badge)
+![MariaDB](https://img.shields.io/badge/DB-MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white)
+<br>
+![Linux](https://img.shields.io/badge/OS-Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![STM32](https://img.shields.io/badge/MCU-STM32-3A5A99?style=for-the-badge)
+![RaspberryPi](https://img.shields.io/badge/Platform-Raspberry%20Pi-CC0000?style=for-the-badge&logo=raspberrypi&logoColor=white)
+![ROS2](https://img.shields.io/badge/Robot-ROS2-339933?style=for-the-badge)
+<br>
+![DHT11](https://img.shields.io/badge/Sensor-DHT11-56CCF2?style=for-the-badge)
+![SGP30](https://img.shields.io/badge/Sensor-SGP30-F2994A?style=for-the-badge)
+![MLX90640](https://img.shields.io/badge/Sensor-MLX90640-EB5757?style=for-the-badge)
+![Camera](https://img.shields.io/badge/Sensor-RPi%20Camera-FFCA28?style=for-the-badge)
+![OpenCV](https://img.shields.io/badge/Library-OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
+![RFID](https://img.shields.io/badge/Input-RFID-6FCF97?style=for-the-badge)
+
+---
+
+## 🎯 3. 主要機能
+
+- **知能型環境監視および自動空調制御**
+  - **リアルタイム監視**: ESS施設単位の温湿度および区域ごとのガス濃度を常時監視
+  - **自動制御**: 閾値到達時に空調を自動起動、制御履歴をデータ化
+  - **制御リクエスト送信**: 監視画面入力をMQTTメッセージで現場装置に送信
+
+- **熱画像によるバッテリラック異常検知**
+  - **発熱監視**: 熱画像カメラを用いたバッテリラックの局所的発熱状態監視
+  - **段階別通知**: 温度危険度に応じたWarning / Criticalの視覚的警告を即座に送信
+  - **履歴管理**: バッテリ熱異常イベントを記録し、事故分析用データを確保
+
+- **ROS2ベース自律巡回ロボット**
+  - **自律巡回**: Nav2アルゴリズムを基に施設内を定期的に自律走行
+  - **死角解消**: 移動型ロボットを活用し、固定型センサーが届かない空間の監視を補完
+  - **自動復帰**: ArUcoマーカーに基づく精密ドッキングで巡回後安定復帰
+
+- **RFID出入管理システム**
+  - **アクセス制御**: RFIDカード認証によるESS施設セキュリティ区域管理
+  - **中央検証**: サーバー中心で権限を検証し、未認可者の入室を阻止
+  - **ログ追跡**: 全ての入退室試行と結果（成功/失敗）を記録
+
+- **中央集中型統合監視タワー（Control Tower GUI）**
+  - **統合可視化**: 施設全体の状態（環境・バッテリ・セキュリティ）を単一ダッシュボードで可視化
+  - **履歴分析**: 蓄積されたログデータに基づき、期間別統計やフィルタリング検索機能を提供
+
+---
+
+## 📘 4. 技術実装
+
+### 1) センサーネットワークと空調制御ロジック
+- **データ収集**: DHT11および6つの区域別SGP30ガスセンサーを活用して高密度環境データを収集
+- **制御ループ**: 環境閾値到達時に空調起動信号を発生させ、制御理由をDBに即時保存するロジックを実装
+
+### 2) 熱画像ROI解析およびイベントトリガー
+- **精密検知**: MLX90640熱画像カメラでバッテリラック領域(ROI)内の最高温度および発生座標を取得
+- **多段階ロジック**: 温度基準に応じたイベント処理システムを構築し、監視UIとリアルタイム通知を連携
+
+### 3) ROS2 Nav2およびArUco精密制御
+- **経路最適化**: Nav2 Stackを用いた効率的巡回経路生成および障害物回避
+- **誤差補正**: OpenCVベースのArUcoマーカー認識アルゴリズムでドッキングステーション精密整列と位置補正
+
+### 4) サーバ主導型RFID認証構造
+- **認証リクエストフロー**: STM32からRFIDカードUIDと位置情報をサーバに送信
+- **権限検証**: サーバで管理者DB(adminsテーブル)と照合し、入室許可可否を判断
+- **結果返却とログ記録**: 認証結果をSTM32に返送し、全試行履歴をaccess_logsテーブルに保存
+
+### 5) 監視GUIおよびデータパイプライン
+- **動的UI設計**: QtでESSリアルタイムマップ、バッテリラック3x3ウィジェット、空調アニメーションを実装
+- **状態同期**: DB状態に応じて監視UIを自動更新
+- **制御リクエスト送信**: GUIボタン入力をMQTT経由で現場装置に送信
+- **ログ検索ロジック**: 期間・イベント種類・危険度・建物条件に応じたSQL検索でログフィルタリング
+  
+---
+
+## 👨‍💻 5. 担当役割と貢献
+
+- **Qtベース中央監視UI開発**
+  - 施設全体の状態を一目で把握できる統合ダッシュボード設計・実装
+  - バッテリラック3x3マップおよび区域別環境状態表示用Custom Widgetを実装
+  - resizeEventで座標再計算ロジックを適用し、画面サイズ変更時のUI整合性を維持
+
+- **MariaDBスキーマ設計とログ構造整理**
+  - 環境データ、入退室ログ、イベント記録を分離・正規化したDBテーブル構造を設計
+  - 時間・区域・イベント種類に基づく重複データ保存防止ロジックを適用
+
+- **MQTTベースデータ収集とDB連携**
+  - PythonでMQTT Subscriberを実装し、センサー・ロボットイベントをDBに保存するパイプライン構築
+  - ネットワーク遅延・欠落を考慮した例外処理ロジックでデータ整合性を管理
+
+- **監視画面ベース制御リクエスト連携**
+  - GUIボタン入力をMQTTメッセージに変換して現場装置に制御リクエスト送信
+  - QMovieアニメーションで空調(Fan)動作状態を直感的に表示
+
+---
+
+## 🐞 6. トラブルシューティング
+
+### 1) アラーム終了後のUI状態未復帰
+- **現象**: ガス/熱異常終了後もUI区域色が正常(NORMAL)に戻らない
+- **分析**: タイマーロジックが更新されず、10秒経過条件が満たされない。特定区域のみ処理され残像発生
+- **解決**: SQL `DATE_SUB(NOW(), INTERVAL 10 SECOND)` 条件とQSetベースFull Sweep自動復帰ロジックを適用
+- **結果**: UIとアラーム状態を自動で整合性維持、残像問題解消
+
+### 2) MQTT再接続時の重複データ保存
+- **現象**: サーバ再起動時、ブローカーに残ったメッセージがDBに重複保存
+- **分析**: clean_sessionオプション未設定によりセッション残留データが送信
+- **解決**: clean_session=Trueを適用、既存DBデータを参照して重複時保存回避
+- **結果**: DB負荷最小化、データ整合性強化
+
+### 3) 可変ウィンドウサイズ対応でウィジェット位置問題
+- **現象**: Qtウィンドウサイズ変更時、背景上のバッテリラックウィジェット位置ずれ
+- **分析**: 絶対座標ベースレンダリングでリサイズ対応不可
+- **解決**: resizeEventで親rect()基準overlay->setGeometryを動的計算
+- **結果**: 多様な画面環境で反応型UI実現
+
+---
+
+## 📚 7. 学んだこと
+
+- **エンドツーエンドシステム統合経験**
+  独自設計プロトコルでセンサー・DB・UIを接続するアーキテクチャを実装。STM32センサーモジュールとROS2ロボットから送信されるイベントをMQTTで統合し、MariaDBおよびQt監視UIまで繋ぐ全データフローを構築。システム統合全般および設計・実装のギャップ理解に基づく実務力を習得。
+
+- **リアルタイムデータ整合性管理**
+  MQTT SubscriberとDB連携時のネットワーク遅延・再接続状況を考慮した例外処理を設計。アラーム終了時のUI自動復帰や重複データ保存防止ロジックを実装し、データ整合性確保の実務的手法を体得。
+
+- **反応型UI設計**
+  resizeEventでの座標再計算とCustom Widget活用により、可変解像度環境でもバッテリラックや環境マップUIを歪みなく表示。多様な画面環境で安定したUI設計能力を養成。
+
+- **ハイブリッド監視構造理解**
+  固定型センサーと移動型ロボットを組み合わせた監視構造を経験。死角を最小化し、イベント発生時に多様なデータソースを統合して対応する構造設計手法を習得。
+
+- **バックエンド効率化**
+  リソースの制限された環境で不要DB I/Oを削減し、有意義な状態変化データのみ保存。監視ログの可読性向上と運用効率化を実現する最適化プロセスを経験。
 
 ---
 
