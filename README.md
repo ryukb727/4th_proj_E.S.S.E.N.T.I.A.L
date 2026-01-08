@@ -45,7 +45,7 @@ STM32 센서 모듈과 ROS2 기반 순찰 로봇에서 수집된 데이터를 MQ
 ### 통신
 ![MQTT](https://img.shields.io/badge/Protocol-MQTT-660066?style=for-the-badge)
 ![JSON](https://img.shields.io/badge/Format-JSON-F2C94C?style=for-the-badge)
-![Wireless](https://img.shields.io/badge/Protocol-ESP8266-WiFi-FF6F61?style=for-the-badge)
+![Wi-Fi](https://img.shields.io/badge/Protocol-ESP8266%20WiFi-FF6F61?style=for-the-badge)
 
 ### 데이터베이스
 ![MariaDB](https://img.shields.io/badge/DB-MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white)
