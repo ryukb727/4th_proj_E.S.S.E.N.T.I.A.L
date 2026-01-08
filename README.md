@@ -10,9 +10,12 @@
 ### 🇰🇷 Korean Version
 
 # 🔋 E.S.S.E.N.T.I.A.L
-## ESS Safety System with Environmental Network & Thermal Intelligent ALert Logic
+### ESS Safety System with Environmental Network & Thermal Intelligent ALert Logic
 ROS2 로봇 순찰과 센서 네트워크 데이터를 기반으로 이상 상황을 자동 감지·분석·대응하는 ESS 통합 안전 관제 솔루션
 
+<a href="docs/assets/video/full_demo.gif">
+  <img src="docs/assets/video/full_demo.gif" width="900">
+</a>
 ---
 
 ## 💡 1. 프로젝트 개요
