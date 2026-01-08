@@ -27,7 +27,7 @@ STM32 센서 모듈과 ROS2 기반 순찰 로봇에서 수집된 데이터를 MQ
 
 특히, 이동형 로봇과 고정형 센서를 결합한 **하이브리드 관제 아키텍처**를 통해 기존 고정형 센서만으로는 사각지대가 발생하던 문제를 해결했습니다.
 
-## 🧩 1.1 System Architecture
+## 🧩 1-1. System Architecture
 ### Hardware Architecture
 <p align="center">
   <img src="docs/assets/slides/hw-arch.png" width="900" alt="Hardware Architecture">
