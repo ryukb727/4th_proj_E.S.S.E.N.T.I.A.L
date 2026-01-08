@@ -9,10 +9,142 @@
 
 ### 🇰🇷 Korean Version
 
-# ⏱️ SI-TA-PO  
-## Linux Kernel Device Driver 기반 타이머 · 시계 · 뽀모도로 임베디드 시스템
+# 🔋 E.S.S.E.N.T.I.A.L
+## ESS Safety System with Environmental Network & Thermal Intelligent ALert Logic
+ROS2 로봇 순찰과 센서 네트워크 데이터를 기반으로 이상 상황을 자동 감지·분석·대응하는 ESS 통합 안전 관제 솔루션
+
+---
+
+## 💡 1. 프로젝트 개요
+
+본 프로젝트는 ESS(에너지 저장 장치) 시설의 화재, 가스 누출, 환경 변화 등 이상 징후를 **실시간으로 감지하고 대응**하기 위한 통합 안전 관제 시스템입니다.
+
+STM32 센서 모듈과 ROS2 기반 순찰 로봇에서 수집된 데이터를 MQTT를 통해 통합하고, MariaDB에 기록하여 <strong>Qt 기반의 중앙 관제 센터(Control Tower)<\strong>에서 실시간 모니터링과 원격 제어를 수행할 수 있도록 구축했습니다.
+
+특히, 이동형 로봇과 고정형 센서를 결합한 **하이브리드 관제 아키텍처**를 통해 기존 고정형 센서만으로는 사각지대가 발생하던 문제를 해결했습니다.
+
+---
+
+### 🧩 시스템 아키텍처 (System Architecture)
+**Edge Layer:** STM32 (환경 센서, Fan 제어), ROS2 Robot (열화상 탐지 및 순찰)  
+**Communication:** MQTT (JSON Protocol)  
+**Control Tower:** Qt C++ GUI Application, MariaDB
+
+---
+
+## 🛠️ 2. 기술 스택
+
+### 언어
+![C++](https://img.shields.io/badge/Language-C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)
+![Python](https://img.shields.io/badge/Language-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![SQL](https://img.shields.io/badge/Language-SQL-003545?style=for-the-badge&logo=mysql&logoColor=white)
+
+### 프레임워크 / 라이브러리
+![Qt](https://img.shields.io/badge/Framework-Qt6-41CD52?style=for-the-badge&logo=qt&logoColor=white)
+
+### 통신
+![MQTT](https://img.shields.io/badge/Protocol-MQTT-660066?style=for-the-badge)
+![JSON](https://img.shields.io/badge/Format-JSON-F2C94C?style=for-the-badge)
+![Wireless](https://img.shields.io/badge/Protocol-ESP8266-WiFi-FF6F61?style=for-the-badge)
+
+### 데이터베이스
+![MariaDB](https://img.shields.io/badge/DB-MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white)
+
+### 하드웨어 / 로봇
+![STM32](https://img.shields.io/badge/MCU-STM32-3A5A99?style=for-the-badge)
+![ROS2](https://img.shields.io/badge/Robot-ROS2-339933?style=for-the-badge)
+![RaspberryPi](https://img.shields.io/badge/Platform-Raspberry%20Pi-CC0000?style=for-the-badge&logo=raspberrypi&logoColor=white)
+
+### 센서 / 입력
+![DHT11](https://img.shields.io/badge/Sensor-DHT11-56CCF2?style=for-the-badge)
+![SGP30](https://img.shields.io/badge/Sensor-SGP30-F2994A?style=for-the-badge)
+![MLX90640](https://img.shields.io/badge/Sensor-MLX90640-EB5757?style=for-the-badge)
+![Camera](https://img.shields.io/badge/Sensor-RPi%20Camera-FFCA28?style=for-the-badge)
+![RFID](https://img.shields.io/badge/Input-RFID-6FCF97?style=for-the-badge)
 
 
+---
+
+## 🎯 3. 핵심 기능
+
+- **실시간 환경 감시 및 제어**
+  - 구역별 온도·습도·가스 농도 모니터링
+  - 임계치 도달 시 Fan 자동 가동 및 관제 UI에 상태 표시
+  - Fan 제어 사유를 기록하여 이력 관리
+
+- **열화상 기반 비상 탐지**
+  - ROI(관심 영역) 분석을 통해 배터리 랙의 최고 온도와 좌표 추출
+  - Critical 이상 발생 시 MQTT를 통한 즉시 알람 발행 및 DB 기록
+
+- **ROS2 기반 자율 순찰 및 Auto-Docking**
+  - NAV2를 활용한 지정 구역 순찰
+  - ArUco 마커 인식으로 충전 위치 및 홈 복귀 정밀 보정
+
+- **통합 관제 타워(Control Tower UI)**
+  - 구역별 상태(Normal / Warning / Critical) 실시간 시각화
+  - 배터리 랙 3x3 구조 시각화 위젯
+  - 기간별 환경 데이터 및 출입·알람 로그 조회
+
+---
+
+## 👨‍💻 4. 역할 및 기여
+
+- **Qt 관제 UI 개발**
+  - 전체 대시보드 설계 및 배터리 랙/환경맵 위젯 구현
+  - Custom Widget 설계 및 resizeEvent 최적화
+
+- **MariaDB 스키마 설계**
+  - 환경 데이터, 출입 로그, 이벤트 기록을 정규화하여 효율적 저장 구조 설계
+  - 데이터 중복 방지를 위한 Fingerprint 로직 적용
+
+- **MQTT 통합 데이터 핸들링**
+  - Python Subscriber 구현으로 센서·로봇 데이터를 실시간 DB 연동
+  - 데이터 정합성 및 누락/중복 방지 로직 적용
+
+- **원격 제어 인터페이스**
+  - Fan 및 공조 시스템 상태 모니터링·수동 제어
+  - 제어 사유 기록 및 UI 반영
+
+---
+
+## 🐞 5. 트러블슈팅
+
+### 1) 알람 종료 후 UI 상태 미복귀
+- **현상**: 가스/열 이상 종료 후에도 UI 구역 색상 정상으로 돌아오지 않음
+- **분석**: 이벤트 발생 시점만 처리하고 종료 기준 부재
+- **해결**: SQL `DATE_SUB(NOW(), INTERVAL 10 SECOND)` 조건과 QSet 목록화로 Auto-Recovery 로직 구현
+- **결과**: 수동 조작 없이 UI와 현장 상황 정합성 확보
+
+### 2) MQTT 재접속 시 중복 데이터 적재
+- **현상**: 서버 재시작 시 브로커에 남아있던 메시지가 DB에 중복 저장
+- **분석**: clean_session 옵션 미설정으로 잔류 세션 데이터 발송
+- **해결**: clean_session=True 적용 및 Fingerprint 기반 중복 저장 차단
+- **결과**: DB 부하 최소화, 데이터 무결성 강화
+
+### 3) 가변 창 크기 대응 시 위젯 위치 문제
+- **현상**: Qt 창 크기 조절 시 배경 위 배터리 랙 위젯 위치 어긋남
+- **분석**: 절대 좌표 기반 렌더링으로 리사이징 대응 불가
+- **해결**: resizeEvent에서 부모 rect() 기반 overlay->setGeometry 동적 계산
+- **결과**: 다양한 화면 환경에서 반응형 UI 구현
+
+---
+
+## 📚 6. 배운 점
+
+- **엔드투엔드(End-to-End) 시스템 통합 역량 강화**  
+  STM32 임베디드 제어기와 ROS2 로봇 플랫폼 간의 이기종 데이터를 MQTT로 통합하고, 이를 MariaDB 및 Qt UI까지 실시간으로 연결하는 전체 서비스 아키텍처를 설계하며 시스템 통합(SI) 프로세스 전반에 대한 실무 경험을 획득함.
+
+- **데이터 무결성 및 시스템 견고성 설계**  
+  네트워크 불안정 시 중복 적재를 방지하는 Fingerprint 알고리즘과, 누락된 이벤트를 자동 복구하는 SQL 기반 Auto-Recovery 로직을 설계함으로써, 실제 운영 환경에서 발생 가능한 예외 상황에 대한 시스템 대응 역량을 강화함.
+
+- **실시간 데이터 파이프라인 최적화 경험**  
+  MQTT 브로커와 Python Subscriber를 연동하여 지연(Latency)을 최소화한 실시간 데이터 파이프라인을 구축. 특히 비동기 처리를 통해 센서 데이터 수집부터 관제 화면 표출까지의 데이터 정합성을 확보함.
+
+- **하이브리드 관제 아키텍처를 통한 사각지대 해소**  
+  고정형 센서의 공간적 한계와 이동형 로봇의 시간적 제약을 상호 보완하는 하이브리드 구조를 구현. 이를 통해 ESS 시설 내 사각지대를 최소화하고, 다각도에서 이벤트를 분석·처리하는 로직 설계 경험을 습득함.
+
+- **자원 효율적인 백엔드 데이터 관리**  
+  제한된 하드웨어 자원 환경에서 성능을 유지하기 위해, 유의미한 상태 변화 데이터만을 선별 저장하도록 설계. 이를 통해 DB I/O 부하를 최적화하고 관리 로그 데이터의 가독성과 분석 효율성을 향상시킴.
 
 ---
 
@@ -28,8 +160,9 @@
 
 ### 🇯🇵 Japanese Version
 
-# ⏱️ SI-TA-PO  
-## Linuxカーネルデバイスドライバベース：タイマー・時計・ポモドーロ組込みシステム
+# 🔋 E.S.S.E.N.T.I.A.L
+## ESS Safety System with Environmental Network & Thermal Intelligent ALert Logic
+データ駆動型ESS統合安全監視システム：ROS2ロボット巡回とセンサーネットワークによる異常の自動検知・分析・対応
 
 
 
