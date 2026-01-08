@@ -28,17 +28,17 @@ STM32 센서 모듈과 ROS2 기반 순찰 로봇에서 수집된 데이터를 MQ
 특히, 이동형 로봇과 고정형 센서를 결합한 **하이브리드 관제 아키텍처**를 통해 기존 고정형 센서만으로는 사각지대가 발생하던 문제를 해결했습니다.
 
 ## 🧩 1-1. System Architecture
-### Hardware Architecture
+### 📍 Hardware Architecture
 <p align="center">
   <img src="docs/assets/slides/hw-arch.png" width="900" alt="Hardware Architecture">
 </p>
 
-### Software Architecture
+### 📍 Software Architecture
 <p align="center">
   <img src="docs/assets/slides/sw-arch.png" width="900" alt="Software Architecture">
 </p>
 
-### Data Flow / Sequence
+### 📍 Data Flow / Sequence
 <p align="center">
   <img src="docs/assets/slides/sequence.png" width="900" alt="Data Flow & Sequence">
 </p>
@@ -225,17 +225,17 @@ STM32センサーモジュールとROS2ベースの巡回ロボットから収�
 特に、移動型ロボットと固定型センサーを組み合わせた**ハイブリッド監視アーキテクチャ**により、従来の固定型センサーのみでは発生していた死角の問題を解決しました。
 
 ## 🧩 1-1. System Architecture
-### Hardware Architecture
+### 📍 Hardware Architecture
 <p align="center">
   <img src="docs/assets/slides/hw-arch.png" width="900" alt="Hardware Architecture">
 </p>
 
-### Software Architecture
+### 📍 Software Architecture
 <p align="center">
   <img src="docs/assets/slides/sw-arch.png" width="900" alt="Software Architecture">
 </p>
 
-### Data Flow / Sequence
+### 📍 Data Flow / Sequence
 <p align="center">
   <img src="docs/assets/slides/sequence.png" width="900" alt="Data Flow & Sequence">
 </p>
