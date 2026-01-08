@@ -14,7 +14,7 @@ CREATE TABLE environment_data (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	measure_time DATETIME DEFAULT CURRENT_TIMESTAMP,
 	temperature FLOAT,
-	humidity FLOAT
+	humidity FLOAT,
 	fan VARCHAR(10) DEFAULT 'OFF',   -- 공조기 상태 (ON/OFF)
 	reason VARCHAR(50) DEFAULT '-',  -- 구동 사유 (TEMP/HUMI/MANUAL/-)
 );
