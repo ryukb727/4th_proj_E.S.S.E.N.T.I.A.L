@@ -38,32 +38,26 @@ STM32 센서 모듈과 ROS2 기반 순찰 로봇에서 수집된 데이터를 MQ
 
 ## 🛠️ 2. 기술 스택
 
-### 언어
 ![C++](https://img.shields.io/badge/Language-C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)
 ![Python](https://img.shields.io/badge/Language-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![SQL](https://img.shields.io/badge/Language-SQL-003545?style=for-the-badge&logo=mysql&logoColor=white)
-
-### 프레임워크 / 라이브러리
+<br>
 ![Qt](https://img.shields.io/badge/Framework-Qt6-41CD52?style=for-the-badge&logo=qt&logoColor=white)
-
-### 통신
 ![MQTT](https://img.shields.io/badge/Protocol-MQTT-660066?style=for-the-badge)
 ![JSON](https://img.shields.io/badge/Format-JSON-F2C94C?style=for-the-badge)
 ![Wi-Fi](https://img.shields.io/badge/Protocol-ESP8266%20WiFi-FF6F61?style=for-the-badge)
-
-### 데이터베이스
 ![MariaDB](https://img.shields.io/badge/DB-MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white)
-
-### 하드웨어 / 로봇
+<br>
+![Linux](https://img.shields.io/badge/OS-Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![STM32](https://img.shields.io/badge/MCU-STM32-3A5A99?style=for-the-badge)
-![ROS2](https://img.shields.io/badge/Robot-ROS2-339933?style=for-the-badge)
 ![RaspberryPi](https://img.shields.io/badge/Platform-Raspberry%20Pi-CC0000?style=for-the-badge&logo=raspberrypi&logoColor=white)
-
-### 센서 / 입력
+![ROS2](https://img.shields.io/badge/Robot-ROS2-339933?style=for-the-badge)
+<br>
 ![DHT11](https://img.shields.io/badge/Sensor-DHT11-56CCF2?style=for-the-badge)
 ![SGP30](https://img.shields.io/badge/Sensor-SGP30-F2994A?style=for-the-badge)
 ![MLX90640](https://img.shields.io/badge/Sensor-MLX90640-EB5757?style=for-the-badge)
 ![Camera](https://img.shields.io/badge/Sensor-RPi%20Camera-FFCA28?style=for-the-badge)
+![OpenCV](https://img.shields.io/badge/Library-OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
 ![RFID](https://img.shields.io/badge/Input-RFID-6FCF97?style=for-the-badge)
 
 ---
@@ -73,7 +67,7 @@ STM32 센서 모듈과 ROS2 기반 순찰 로봇에서 수집된 데이터를 MQ
 - **지능형 환경 감시 및 자동 공조 제어**
   - **실시간 모니터링**: ESS 시설 단위의 온·습도와 구역별 가스 농도를 상시 감시
   - **자동화 제어**: 임계치 도달 시 공조기 자동 가동 및 제어 이력 데이터화
-  - **원격 관제**: 관제 화면을 통한 공조기 상태 실시간 확인 및 수동 원격 제어 지원
+  - **제어 요청 전송**: 관제 화면 입력을 MQTT 메시지로 현장 장치에 전달
 
 - **열화상 기반 배터리 랙 이상 탐지**
   - **발열 모니터링**: 열화상 카메라를 활용한 배터리 랙의 국부 발열 상태 감시
@@ -87,11 +81,11 @@ STM32 센서 모듈과 ROS2 기반 순찰 로봇에서 수집된 데이터를 MQ
 
 - **RFID 출입 보안 시스템**
   - **접근 통제**: RFID 카드 인증을 통한 ESS 시설 보안 구역 관리
-  - **중앙 검증**: 서버 중심의 권한 검증을 통해 비인가자 출입 원천 차단
+  - **중앙 검증**: 서버 중심의 권한 검증을 통해 비인가자 출입 차단
   - **로그 추적**: 모든 출입 시도 및 결과(성공/실패) 이력 관리
 
 - **중앙 집중형 통합 관제 타워 (Control Tower GUI)**
-  - **통합 시각화**: 시설 전체 상태(환경, 배터리, 로봇, 보안)를 단일 대시보드에서 시각화
+  - **통합 시각화**: 시설 전체 상태(환경, 배터리, 보안)를 단일 대시보드에서 시각화
   - **이력 분석**: 축적된 로그 데이터를 바탕으로 기간별 통계 및 필터링 조회 기능 제공
 
 ---
@@ -111,13 +105,16 @@ STM32 센서 모듈과 ROS2 기반 순찰 로봇에서 수집된 데이터를 MQ
 - **오차 보정**: OpenCV 기반 ArUco 마커 인식 알고리즘을 통한 도킹 스테이션 정밀 정렬 및 위치 보정
 
 ### 4) 서버 주도형 RFID 인증 구조
-- **3-Way Handshake**: STM32(요청) → 서버(인증 및 DB 대조) → STM32(응답) 구조의 보안 시퀀스 설계
-- **무결성 유지**: 모든 출입 시도 결과를 access_logs 테이블에 기록하여 데이터 무결성 확보
+- **인증 요청 흐름**: STM32에서 RFID 카드 UID와 위치 정보를 서버로 전송
+- **권한 검증**: 서버에서 관리자 DB(admins 테이블)와 대조하여 출입 허가 여부 판단
+- **결과 회신 및 로그 기록**: 인증 결과를 STM32로 회신하고, 모든 시도 이력을 access_logs 테이블에 저장
 
 ### 5) 관제 GUI 및 데이터 파이프라인
 - **동적 UI 설계**: Qt를 활용한 ESS 실시간 맵, 배터리 랙 3x3 상태 위젯 및 공조기 애니메이션 구현
-- **상태 동기화 및 양방향 제어**: DB 상태에 따라 UI를 자동 갱신하고 관제 화면 입력을 서버·현장 장치로 전달
-- **로그 조회 로직**: 기간·이벤트 유형·위험 단계·건물 조건에 따른 동적 SQL 구성으로 로그 필터링 구현
+- **상태 동기화**: DB 상태에 따라 관제 UI를 자동 갱신
+- **제어 요청 전송**: 관제 화면 버튼 입력 시 MQTT를 통해 현장 장치로 제어 요청 메시지 전송
+- **로그 조회 로직**: 기간·이벤트 유형·위험 단계·건물 조건에 따른 조건 기반 SQL 조회로 로그 필터링 구현
+  
 ---
 
 ## 👨‍💻 5. 역할 및 기여
