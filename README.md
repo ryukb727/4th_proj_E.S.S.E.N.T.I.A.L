@@ -30,7 +30,13 @@ STM32 센서 모듈과 ROS2 기반 순찰 로봇에서 수집된 데이터를 MQ
 ## 🧩 1-1. System Architecture
 ### 📍 Hardware Architecture
 <p align="center">
-  <img src="docs/assets/slides/hw-arch.png" width="900" alt="Hardware Architecture">
+  <img src="docs/assets/slides/hw-arch.png" width="900" alt="HW Arch 1">
+</p>
+<p align="center">
+  <img src="docs/assets/slides/hw-arch2.png" width="900" alt="HW Arch 2">
+</p>
+<p align="center">
+  <img src="docs/assets/slides/hw-arch3.png" width="900" alt="HW Arch 3">
 </p>
 
 ### 📍 Software Architecture
@@ -47,6 +53,9 @@ STM32 센서 모듈과 ROS2 기반 순찰 로봇에서 수집된 데이터를 MQ
 
 <p align="center">
   <img src="docs/assets/diagrams/ros-nodes-1.png" width="900" alt="ROS2 Node Graph">
+</p>
+<p align="center">
+  <img src="docs/assets/diagrams/ros-nodes-2.png" width="900" alt="ROS2 Node Graph">
 </p>
 
 ---
@@ -227,7 +236,13 @@ STM32センサーモジュールとROS2ベースの巡回ロボットから収�
 ## 🧩 1-1. System Architecture
 ### 📍 Hardware Architecture
 <p align="center">
-  <img src="docs/assets/slides/hw-arch.png" width="900" alt="Hardware Architecture">
+  <img src="docs/assets/slides/hw-arch.png" width="900" alt="HW Arch 1">
+</p>
+<p align="center">
+  <img src="docs/assets/slides/hw-arch2.png" width="900" alt="HW Arch 2">
+</p>
+<p align="center">
+  <img src="docs/assets/slides/hw-arch3.png" width="900" alt="HW Arch 3">
 </p>
 
 ### 📍 Software Architecture
@@ -244,6 +259,9 @@ STM32センサーモジュールとROS2ベースの巡回ロボットから収�
 
 <p align="center">
   <img src="docs/assets/diagrams/ros-nodes-1.png" width="900" alt="ROS2 Node Graph">
+</p>
+<p align="center">
+  <img width="900" height="300" alt="image" src="https://github.com/user-attachments/assets/d8b4919d-c682-499c-b872-97edad48e873" />
 </p>
 
 ---
