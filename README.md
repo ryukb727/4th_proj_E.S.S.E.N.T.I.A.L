@@ -428,7 +428,7 @@ STM32センサーモジュールとROS2ベースの巡回ロボットから収�
 
 <div id="Team">
 
-### ⏰ Team
+### ⚡ Team
 
 # E.S.S.E.N.T.I.A.L  
 **ESS Safety System with Environmental & Thermal Intelligent ALert**
