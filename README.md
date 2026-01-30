@@ -10,6 +10,7 @@
 ### 🇰🇷 Korean Version
 
 # 🔋 E.S.S.E.N.T.I.A.L
+## 🏆 **엣지 AIoT 시스템 개발 프로젝트 경진대회 우수상 수상**
 ## ESS Safety System with Environmental Network & Thermal Intelligent ALert Logic
 ROS2 로봇 순찰과 센서 네트워크 데이터를 기반으로 이상 상황을 자동 감지·분석·대응하는 ESS 통합 안전 관제 시스템
 
@@ -217,6 +218,7 @@ STM32 센서 모듈과 ROS2 기반 순찰 로봇에서 수집된 데이터를 MQ
 ### 🇯🇵 Japanese Version
 
 # 🔋 E.S.S.E.N.T.I.A.L
+## 🏆 **エッジAIoTシステム開発プロジェクトコンペティション優秀賞受賞**
 ## ESS Safety System with Environmental Network & Thermal Intelligent ALert Logic
 データ駆動型ESS統合安全監視システム：ROS2ロボット巡回とセンサーネットワークによる異常の自動検知・分析・対応
 
